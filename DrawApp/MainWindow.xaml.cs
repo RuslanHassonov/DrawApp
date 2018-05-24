@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Markup;
+using System.Xml;
+using System.IO;
 
 namespace DrawApp
 {
@@ -20,7 +23,8 @@ namespace DrawApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        ShapeManager sm = new ShapeManager();
+        ShapeManager sm;
+        CanvasManager cm;
         Shape shapeExample;
         int w = 0;
         int h = 0;
@@ -30,7 +34,11 @@ namespace DrawApp
         public MainWindow()
         {
             InitializeComponent();
-            cb_Shapes.ItemsSource = sm.ListShapes;
+            ShapeManager shapeManager = new ShapeManager(this);
+            CanvasManager canvasManager = new CanvasManager(this);
+            sm = shapeManager;
+            cm = canvasManager;
+            cb_Shapes.ItemsSource = shapeManager.ListShapes;
         }
 
         private void cb_Shapes_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -85,15 +93,120 @@ namespace DrawApp
         {
             try
             {
-                Shape shapeDrawing = sm.CreateNewShape(cb_Shapes.SelectedValue.ToString(), w, h, r, g, b);
-                Point location = e.GetPosition(cvs_Drawing);
-                Canvas.SetTop(shapeDrawing, location.Y);
-                Canvas.SetLeft(shapeDrawing, location.X);
+                Shape shapeDrawing = cm.Draw(cb_Shapes.SelectedValue.ToString(), w, h, r, g, b, e);
                 cvs_Drawing.Children.Add(shapeDrawing);
             }
             catch (Exception)
             {
                 MessageBox.Show("Error occured - Please provide all necessary values before using this canvas.");
+            }
+        }
+
+        private void bt_SaveColour_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                r = Byte.Parse(tb_RedValue.Text);
+                g = Byte.Parse(tb_GreenValue.Text);
+                b = Byte.Parse(tb_BlueValue.Text);
+                Color color = cm.AddColor(r, g, b);
+                Rectangle colorRec = new Rectangle
+                {
+                    Height = 20,
+                    Fill = new SolidColorBrush(color)
+                };
+                lb_ColourTemplates.Items.Add(colorRec);
+                tb_RedValue.Clear();
+                tb_GreenValue.Clear();
+                tb_BlueValue.Clear();
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Error occured - Please provide correct values before choosing the shape.");
+            }
+            catch (OverflowException)
+            {
+                MessageBox.Show("Error occured - The value of a color is incorrect. Value must be between 0 and 255");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error occured - " + ex.Message);
+            }
+        }
+
+        private void lb_ColourTemplates_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Rectangle selected = lb_ColourTemplates.SelectedItem as Rectangle;
+
+            if (selected != null)
+            {
+                tb_RedValue.Text = ((SolidColorBrush)selected.Fill).Color.R.ToString();
+                tb_GreenValue.Text = ((SolidColorBrush)selected.Fill).Color.G.ToString();
+                tb_BlueValue.Text = ((SolidColorBrush)selected.Fill).Color.B.ToString();
+            }
+        }
+
+        private void bt_SaveShape_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                StackPanel stack = new StackPanel();
+                stack.Orientation = Orientation.Horizontal;
+
+                Label colorLabel = new Label();
+                r = Byte.Parse(tb_RedValue.Text);
+                g = Byte.Parse(tb_GreenValue.Text);
+                b = Byte.Parse(tb_BlueValue.Text);
+                colorLabel.Width = 40;
+                colorLabel.Height = 30;
+                Color color = cm.AddColor(r, g, b);
+                colorLabel.Background = new SolidColorBrush(color);
+
+                Label descriptionLabel = new Label();
+
+                if (cb_Shapes.SelectedItem.ToString() == "Ellipse" && tb_Height.Text == tb_Width.Text)
+                {
+                    descriptionLabel.Content = "Circle - " + tb_Height.Text;
+                }
+                else if (cb_Shapes.SelectedItem.ToString() == "Ellipse" && tb_Height.Text != tb_Width.Text)
+                {
+                    descriptionLabel.Content = "Ellipse - " + tb_Height.Text + " x " + tb_Width.Text;
+                }
+                else if (cb_Shapes.SelectedItem.ToString() == "Rectangle" && tb_Height.Text == tb_Width.Text)
+                {
+                    descriptionLabel.Content = "Square - " + tb_Height.Text;
+                }
+                else if (cb_Shapes.SelectedItem.ToString() == "Rectangle" && tb_Height.Text != tb_Width.Text)
+                {
+                    descriptionLabel.Content = "Rectangle - " + tb_Height.Text + " x " + tb_Width.Text;
+                }
+
+                stack.Children.Add(colorLabel);
+                stack.Children.Add(descriptionLabel);
+
+                lb_ShapeTemplates.Items.Add(stack);
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Error occured - Please provide correct values before choosing the shape.");
+            }
+            catch (OverflowException)
+            {
+                MessageBox.Show("Error occured - The value of a color is incorrect. Value must be between 0 and 255");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error occured - " + ex.Message);
+            }
+        }
+
+        private void lb_ShapeTemplates_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            StackPanel selectedShape = lb_ShapeTemplates.SelectedItem as StackPanel;
+
+            if (selectedShape != null)
+            {
+                
             }
         }
     }

@@ -17,6 +17,37 @@ namespace DrawApp
 {
     public class CanvasManager
     {
+        public Shape Shape { get; set; }
+        public Color Color { get; set; }
+        public ShapeManager Sm { get; set; }
+        public MainWindow Window { get; set; }
 
+        public CanvasManager(Window w)
+        {
+            Window = w as MainWindow;
+            Sm = new ShapeManager(w);
+        }
+
+        public Shape Draw(string shapeName, int w, int h, byte r, byte g, byte b, MouseButtonEventArgs e)
+        {
+            Shape = Sm.CreateNewShape(shapeName, w, h, r, g, b);
+            Point location = e.GetPosition(Window.cvs_Drawing);
+            Canvas.SetTop(Shape, location.Y);
+            Canvas.SetLeft(Shape, location.X);
+
+            return Shape;
+        }
+
+        public Color AddColor(byte r, byte g, byte b)
+        {
+            Color c = new Color
+            {
+                A = 255,
+                R = r,
+                G = g,
+                B = b
+            };
+            return c;
+        }
     }
 }

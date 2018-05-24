@@ -17,11 +17,13 @@ namespace DrawApp
 {
     public class ShapeManager
     {
+        public MainWindow window { get; set; }
         public Shape NewShape { get; set; }
         public List<string> ListShapes { get; set; } = new List<string>();
 
-        public ShapeManager()
+        public ShapeManager( Window w)
         {
+            window = w as MainWindow;
             ListShapes.Add("Ellipse");
             ListShapes.Add("Rectangle");
         }
@@ -48,26 +50,26 @@ namespace DrawApp
             switch (shapeType)
             {
                 case "Ellipse":
-                    if (w > 135)
+                    if (w > window.cvs_Example.Width)
                     {
-                        w = 135;
+                        w = (int)window.cvs_Example.Width;
                         
                     }
-                    if (h > 135)
+                    if (h > window.cvs_Example.Height)
                     {
-                        h = 135;
+                        h = (int)window.cvs_Example.Height;
                     }
                     NewShape = CreateNewEllipse(w, h, r, g, b);
                     break;
                 case "Rectangle":
-                    if (w > 135)
+                    if (w > window.cvs_Example.Width)
                     {
-                        w = 130;
+                        w = (int)window.cvs_Example.Width;
 
                     }
-                    if (h > 135)
+                    if (h > window.cvs_Example.Height)
                     {
-                        h = 130;
+                        h = (int)window.cvs_Example.Height;
                     }
                     NewShape = CreateNewRectangle(w, h, r, g, b);
                     break;
