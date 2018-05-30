@@ -23,14 +23,11 @@ namespace DrawApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        SQLServer_DrawAppDataContext ctx = new SQLServer_DrawAppDataContext();
         ShapeManager sm;
         CanvasManager cm;
         Shape shapeExample;
-        int w = 0;
-        int h = 0;
-        byte r = 0;
-        byte g = 0;
-        byte b = 0;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -39,7 +36,11 @@ namespace DrawApp
             sm = shapeManager;
             cm = canvasManager;
             cb_Shapes.ItemsSource = shapeManager.ListShapes;
+            LoadColors();
+            LoadShapes();
         }
+
+        #region Shape Definition and Drawing
 
         private void cb_Shapes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -47,11 +48,11 @@ namespace DrawApp
             {
                 try
                 {
-                    w = Int32.Parse(tb_Width.Text);
-                    h = Int32.Parse(tb_Height.Text);
-                    r = Byte.Parse(tb_RedValue.Text);
-                    g = Byte.Parse(tb_GreenValue.Text);
-                    b = Byte.Parse(tb_BlueValue.Text);
+                    int w = Int32.Parse(tb_Width.Text);
+                    int h = Int32.Parse(tb_Height.Text);
+                    byte r = Byte.Parse(tb_RedValue.Text);
+                    byte g = Byte.Parse(tb_GreenValue.Text);
+                    byte b = Byte.Parse(tb_BlueValue.Text);
                     cvs_Example.Children.Clear();
                     shapeExample = sm.CreateNewExampleShape(cb_Shapes.SelectedValue.ToString(), w, h, r, g, b);
                     Canvas.SetTop(shapeExample, 0);
@@ -77,22 +78,15 @@ namespace DrawApp
 
         }
 
-        private void bt_ClearAll_Click(object sender, RoutedEventArgs e)
-        {
-            tb_Width.Clear();
-            tb_Height.Clear();
-            tb_RedValue.Clear();
-            tb_GreenValue.Clear();
-            tb_BlueValue.Clear();
-            cvs_Example.Children.Clear();
-            cb_Shapes.SelectedIndex = -1;
-            shapeExample = null;
-        }
-
         private void Canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             try
             {
+                int w = Int32.Parse(tb_Width.Text);
+                int h = Int32.Parse(tb_Height.Text);
+                byte r = Byte.Parse(tb_RedValue.Text);
+                byte g = Byte.Parse(tb_GreenValue.Text);
+                byte b = Byte.Parse(tb_BlueValue.Text);
                 Shape shapeDrawing = cm.Draw(cb_Shapes.SelectedValue.ToString(), w, h, r, g, b, e);
                 cvs_Drawing.Children.Add(shapeDrawing);
             }
@@ -102,23 +96,57 @@ namespace DrawApp
             }
         }
 
+        #endregion
+
+        #region Color Saving and Selecting with DB
+
+        private void LoadColors()
+        {
+            try
+            {
+                var list = from c in ctx.SAVED_COLORs
+                           select new SavedColor
+                           {
+                               R = (byte)c.Red,
+                               G = (byte)c.Green,
+                               B = (byte)c.Blue
+                           };
+                foreach (var item in list)
+                {
+                    Color color = cm.AddColor(item.R, item.G, item.B);
+                    Rectangle colorRec = new Rectangle
+                    {
+                        Height = 20,
+                        Fill = new SolidColorBrush(color)
+                    };
+                    lb_ColourTemplates.Items.Add(colorRec);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error" + ex.Message);
+            }
+        }
+
         private void bt_SaveColour_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                r = Byte.Parse(tb_RedValue.Text);
-                g = Byte.Parse(tb_GreenValue.Text);
-                b = Byte.Parse(tb_BlueValue.Text);
-                Color color = cm.AddColor(r, g, b);
-                Rectangle colorRec = new Rectangle
+                byte r = Byte.Parse(tb_RedValue.Text);
+                byte g = Byte.Parse(tb_GreenValue.Text);
+                byte b = Byte.Parse(tb_BlueValue.Text);
+
+                SAVED_COLOR c = new SAVED_COLOR()
                 {
-                    Height = 20,
-                    Fill = new SolidColorBrush(color)
+                    Red = r,
+                    Green = g,
+                    Blue = b
                 };
-                lb_ColourTemplates.Items.Add(colorRec);
-                tb_RedValue.Clear();
-                tb_GreenValue.Clear();
-                tb_BlueValue.Clear();
+                ctx.SAVED_COLORs.InsertOnSubmit(c);
+                ctx.SubmitChanges();
+
+                lb_ColourTemplates.Items.Clear();
+                LoadColors();
             }
             catch (FormatException)
             {
@@ -146,45 +174,105 @@ namespace DrawApp
             }
         }
 
+        #endregion
+
+        #region Shape Saving and Selecting with DB
+
+        private void LoadShapes()
+        {
+            try
+            {
+                var list = from s in ctx.SAVED_SHAPEs
+                           from c in ctx.SAVED_COLORs
+                           where s.Color_ID == c.Color_ID
+                           select new SavedShape
+                           {
+                               W = (int)s.Width,
+                               H = (int)s.Height,
+                               Shape = s.Shape,
+                               R = (byte)c.Red,
+                               G = (byte)c.Green,
+                               B = (byte)c.Blue
+                           };
+
+                foreach (var item in list)
+                {
+                    StackPanel stack = new StackPanel();
+                    stack.Orientation = Orientation.Horizontal;
+
+                    Label colorLabel = new Label();
+                    colorLabel.Width = 40;
+                    colorLabel.Height = 30;
+                    Color color = cm.AddColor(item.R, item.G, item.B);
+                    colorLabel.Background = new SolidColorBrush(color);
+
+                    Label descriptionLabel = new Label();
+                    descriptionLabel.Content = item.ToString(item.Shape);
+
+                    stack.Children.Add(colorLabel);
+                    stack.Children.Add(descriptionLabel);
+
+                    lb_ShapeTemplates.Items.Add(stack);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show("Error " + ex.Message);
+            }
+        }
+
         private void bt_SaveShape_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                StackPanel stack = new StackPanel();
-                stack.Orientation = Orientation.Horizontal;
-
-                Label colorLabel = new Label();
-                r = Byte.Parse(tb_RedValue.Text);
-                g = Byte.Parse(tb_GreenValue.Text);
-                b = Byte.Parse(tb_BlueValue.Text);
-                colorLabel.Width = 40;
-                colorLabel.Height = 30;
-                Color color = cm.AddColor(r, g, b);
-                colorLabel.Background = new SolidColorBrush(color);
-
-                Label descriptionLabel = new Label();
+                int w = Int32.Parse(tb_Width.Text);
+                int h = Int32.Parse(tb_Height.Text);
+                byte r = Byte.Parse(tb_RedValue.Text);
+                byte g = Byte.Parse(tb_GreenValue.Text);
+                byte b = Byte.Parse(tb_BlueValue.Text);
+                string name = string.Empty;
 
                 if (cb_Shapes.SelectedItem.ToString() == "Ellipse" && tb_Height.Text == tb_Width.Text)
                 {
-                    descriptionLabel.Content = "Circle - " + tb_Height.Text;
+                    name = "Circle";
                 }
                 else if (cb_Shapes.SelectedItem.ToString() == "Ellipse" && tb_Height.Text != tb_Width.Text)
                 {
-                    descriptionLabel.Content = "Ellipse - " + tb_Height.Text + " x " + tb_Width.Text;
+                    name = "Ellipse";
                 }
                 else if (cb_Shapes.SelectedItem.ToString() == "Rectangle" && tb_Height.Text == tb_Width.Text)
                 {
-                    descriptionLabel.Content = "Square - " + tb_Height.Text;
+                    name = "Square";
                 }
                 else if (cb_Shapes.SelectedItem.ToString() == "Rectangle" && tb_Height.Text != tb_Width.Text)
                 {
-                    descriptionLabel.Content = "Rectangle - " + tb_Height.Text + " x " + tb_Width.Text;
+                    name = "Rectangle";
                 }
 
-                stack.Children.Add(colorLabel);
-                stack.Children.Add(descriptionLabel);
+                SAVED_COLOR c = new SAVED_COLOR()
+                {
+                    Red = r,
+                    Green = g,
+                    Blue = b
+                };
 
-                lb_ShapeTemplates.Items.Add(stack);
+                ctx.SAVED_COLORs.InsertOnSubmit(c);
+                ctx.SubmitChanges();
+
+                SAVED_SHAPE s = new SAVED_SHAPE()
+                {
+                    Width = w,
+                    Height = h,
+                    Shape = name,
+                    Color_ID = c.Color_ID
+                };
+
+                ctx.SAVED_SHAPEs.InsertOnSubmit(s);
+                ctx.SubmitChanges();
+
+                lb_ShapeTemplates.Items.Clear();
+                LoadShapes();
             }
             catch (FormatException)
             {
@@ -206,8 +294,25 @@ namespace DrawApp
 
             if (selectedShape != null)
             {
-                
+                MessageBox.Show("Shape Changed");
             }
         }
+
+        #endregion
+
+
+        private void bt_ClearAll_Click(object sender, RoutedEventArgs e)
+        {
+            tb_Width.Clear();
+            tb_Height.Clear();
+            tb_RedValue.Clear();
+            tb_GreenValue.Clear();
+            tb_BlueValue.Clear();
+            cvs_Example.Children.Clear();
+            cb_Shapes.SelectedIndex = -1;
+            lb_ColourTemplates.SelectedIndex = -1;
+            shapeExample = null;
+        }
+
     }
 }

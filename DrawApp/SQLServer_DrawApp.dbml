@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="2018_Hassonov_Ruslan_C#" Class="SQLServer_DrawAppDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=sqlmobyus.vlan77.be;Initial Catalog=2018_Hassonov_Ruslan_C#;Persist Security Info=True;User ID=cursist1718_c0109030" SettingsObjectName="DrawApp.Properties.Settings" SettingsPropertyName="_2018_Hassonov_Ruslan_C_ConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.SAVED_COLOR" Member="SAVED_COLORs">
+    <Type Name="SAVED_COLOR">
+      <Column Name="Color_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Red" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Green" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Blue" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="SAVED_COLOR_SAVED_SHAPE" Member="SAVED_SHAPEs" ThisKey="Color_ID" OtherKey="Color_ID" Type="SAVED_SHAPE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SAVED_SHAPE" Member="SAVED_SHAPEs">
+    <Type Name="SAVED_SHAPE">
+      <Column Name="Shape_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Shape" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Width" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Height" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Color_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="SAVED_COLOR_SAVED_SHAPE" Member="SAVED_COLOR" ThisKey="Color_ID" OtherKey="Color_ID" Type="SAVED_COLOR" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
