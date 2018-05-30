@@ -250,6 +250,8 @@ namespace DrawApp
                     name = "Rectangle";
                 }
 
+                // Issue happens from here on out. Color gets saved as a new color, no idea how to check if color already exists
+
                 SAVED_COLOR c = new SAVED_COLOR()
                 {
                     Red = r,
