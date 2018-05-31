@@ -19,18 +19,18 @@ namespace DrawApp
     {
         public Shape Shape { get; set; }
         public Color Color { get; set; }
-        public ShapeManager Sm { get; set; }
+        public ShapeManager ShapeManager { get; set; }
         public MainWindow Window { get; set; }
 
-        public CanvasManager(Window w)
+        public CanvasManager(MainWindow w)
         {
-            Window = w as MainWindow;
-            Sm = new ShapeManager(w);
+            Window = w;
+            ShapeManager = new ShapeManager(w);
         }
 
         public Shape Draw(string shapeName, int w, int h, byte r, byte g, byte b, MouseButtonEventArgs e)
         {
-            Shape = Sm.CreateNewShape(shapeName, w, h, r, g, b);
+            Shape = ShapeManager.CreateNewShape(shapeName, w, h, r, g, b);
             Point location = e.GetPosition(Window.cvs_Drawing);
             Canvas.SetTop(Shape, location.Y);
             Canvas.SetLeft(Shape, location.X);

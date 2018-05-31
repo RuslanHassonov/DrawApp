@@ -15,27 +15,31 @@ using System.Windows.Shapes;
 
 namespace DrawApp
 {
+    public enum ShapeList {Ellipse, Rectangle}
+
     public class ShapeManager
     {
         public MainWindow window { get; set; }
         public Shape NewShape { get; set; }
         public List<string> ListShapes { get; set; } = new List<string>();
 
-        public ShapeManager( Window w)
+        public ShapeManager( MainWindow w)
         {
-            window = w as MainWindow;
+            window = w;
             ListShapes.Add("Ellipse");
             ListShapes.Add("Rectangle");
         }
 
         public Shape CreateNewShape(string shapeType, int w, int h, byte r, byte g, byte b)
         {
-            switch (shapeType)
+            ShapeList shapeList = new ShapeList();
+            
+            switch (shapeList)
             {
-                case "Ellipse":
+                case ShapeList.Ellipse:
                     NewShape = CreateNewEllipse(w, h, r, g, b);
                     break;
-                case "Rectangle":
+                case ShapeList.Rectangle:
                     NewShape = CreateNewRectangle(w, h, r, g, b);
                     break;
                 default:
