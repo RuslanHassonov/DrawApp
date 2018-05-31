@@ -14,7 +14,8 @@ namespace DrawApp
         public byte R { get; set; }
         public byte G { get; set; }
         public byte B { get; set; }
-        
+        public int Shape_ID { get; set; }
+
         public string ToString(string shape)
         {
             if (shape == "Circle" && H == W)

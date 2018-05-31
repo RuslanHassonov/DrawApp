@@ -31,11 +31,9 @@ namespace DrawApp
         public MainWindow()
         {
             InitializeComponent();
-            ShapeManager shapeManager = new ShapeManager(this);
-            CanvasManager canvasManager = new CanvasManager(this);
-            sm = shapeManager;
-            cm = canvasManager;
-            cb_Shapes.ItemsSource = shapeManager.ListShapes;
+            sm = new ShapeManager(this);
+            cm = new CanvasManager(this);
+            cb_Shapes.ItemsSource = new ShapeManager(this).ListShapes;
             LoadColors();
             LoadShapes();
         }
@@ -54,7 +52,7 @@ namespace DrawApp
                     byte g = Byte.Parse(tb_GreenValue.Text);
                     byte b = Byte.Parse(tb_BlueValue.Text);
                     cvs_Example.Children.Clear();
-                    shapeExample = sm.CreateNewExampleShape(cb_Shapes.SelectedValue.ToString(), w, h, r, g, b);
+                    shapeExample = sm.CreateNewShape((cb_Shapes.SelectedItem.ToString() == ShapeList.Ellipse.ToString() ? ShapeList.Ellipse : ShapeList.Rectangle),((int)cvs_Example.Width < w ? (int)cvs_Example.Width : w), ((int)cvs_Example.Height < h ? (int)cvs_Example.Height : h), r, g, b);
                     Canvas.SetTop(shapeExample, 0);
                     Canvas.SetLeft(shapeExample, 0);
                     cvs_Example.Children.Add(shapeExample);
@@ -87,7 +85,7 @@ namespace DrawApp
                 byte r = Byte.Parse(tb_RedValue.Text);
                 byte g = Byte.Parse(tb_GreenValue.Text);
                 byte b = Byte.Parse(tb_BlueValue.Text);
-                Shape shapeDrawing = cm.Draw(cb_Shapes.SelectedValue.ToString(), w, h, r, g, b, e);
+                Shape shapeDrawing = cm.Draw((cb_Shapes.SelectedItem.ToString() == ShapeList.Ellipse.ToString() ? ShapeList.Ellipse : ShapeList.Rectangle), w, h, r, g, b, e);
                 cvs_Drawing.Children.Add(shapeDrawing);
             }
             catch (Exception)
@@ -113,7 +111,7 @@ namespace DrawApp
                            };
                 foreach (var item in list)
                 {
-                    Color color = cm.AddColor(item.R, item.G, item.B);
+                    Color color = sm.AddColor(item.R, item.G, item.B);
                     Rectangle colorRec = new Rectangle
                     {
                         Height = 20,
@@ -192,7 +190,8 @@ namespace DrawApp
                                Shape = s.Shape,
                                R = (byte)c.Red,
                                G = (byte)c.Green,
-                               B = (byte)c.Blue
+                               B = (byte)c.Blue,
+                               Shape_ID = s.Shape_ID
                            };
 
                 foreach (var item in list)
@@ -203,7 +202,7 @@ namespace DrawApp
                     Label colorLabel = new Label();
                     colorLabel.Width = 40;
                     colorLabel.Height = 30;
-                    Color color = cm.AddColor(item.R, item.G, item.B);
+                    Color color = sm.AddColor(item.R, item.G, item.B);
                     colorLabel.Background = new SolidColorBrush(color);
 
                     Label descriptionLabel = new Label();
@@ -211,6 +210,7 @@ namespace DrawApp
 
                     stack.Children.Add(colorLabel);
                     stack.Children.Add(descriptionLabel);
+                    stack.Tag = item;
 
                     lb_ShapeTemplates.Items.Add(stack);
                 }
@@ -250,8 +250,6 @@ namespace DrawApp
                     name = "Rectangle";
                 }
 
-                // Issue happens from here on out. Color gets saved as a new color, no idea how to check if color already exists
-
                 SAVED_COLOR c = new SAVED_COLOR()
                 {
                     Red = r,
@@ -259,8 +257,19 @@ namespace DrawApp
                     Blue = b
                 };
 
-                ctx.SAVED_COLORs.InsertOnSubmit(c);
-                ctx.SubmitChanges();
+                SAVED_COLOR savedColor = ctx.SAVED_COLORs.Where(sc => sc.Red == c.Red && sc.Blue == c.Blue && sc.Green == c.Green).FirstOrDefault();
+                //SAVED_COLOR sAVED_COLOR2 = (from sc in ctx.SAVED_COLORs
+                //                            where sc.Red == c.Red && sc.Blue == c.Blue && sc.Green == c.Green
+                //                            select sc).FirstOrDefault();
+                if (savedColor == null)
+                {
+                    ctx.SAVED_COLORs.InsertOnSubmit(c);
+                    ctx.SubmitChanges();
+                }
+                else
+                {
+                    c.Color_ID = savedColor.Color_ID;
+                }
 
                 SAVED_SHAPE s = new SAVED_SHAPE()
                 {
@@ -296,7 +305,21 @@ namespace DrawApp
 
             if (selectedShape != null)
             {
-                MessageBox.Show("Shape Changed");
+                SavedShape savedShape = (SavedShape)selectedShape.Tag;
+
+                tb_RedValue.Text = savedShape.R.ToString();
+                tb_GreenValue.Text = savedShape.G.ToString();
+                tb_BlueValue.Text = savedShape.B.ToString();
+                tb_Width.Text = savedShape.W.ToString();
+                tb_Height.Text = savedShape.H.ToString();
+                if (savedShape.Shape == "Circle" || savedShape.Shape == "Ellipse")
+                {
+                    cb_Shapes.SelectedIndex = 0;
+                }
+                else
+                {
+                    cb_Shapes.SelectedIndex = 1;
+                }
             }
         }
 

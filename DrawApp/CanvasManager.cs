@@ -28,7 +28,7 @@ namespace DrawApp
             ShapeManager = new ShapeManager(w);
         }
 
-        public Shape Draw(string shapeName, int w, int h, byte r, byte g, byte b, MouseButtonEventArgs e)
+        public Shape Draw(ShapeList shapeName, int w, int h, byte r, byte g, byte b, MouseButtonEventArgs e)
         {
             Shape = ShapeManager.CreateNewShape(shapeName, w, h, r, g, b);
             Point location = e.GetPosition(Window.cvs_Drawing);
@@ -36,18 +36,6 @@ namespace DrawApp
             Canvas.SetLeft(Shape, location.X);
 
             return Shape;
-        }
-
-        public Color AddColor(byte r, byte g, byte b)
-        {
-            Color c = new Color
-            {
-                A = 255,
-                R = r,
-                G = g,
-                B = b
-            };
-            return c;
         }
     }
 }

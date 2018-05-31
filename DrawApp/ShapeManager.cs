@@ -15,66 +15,30 @@ using System.Windows.Shapes;
 
 namespace DrawApp
 {
-    public enum ShapeList {Ellipse, Rectangle}
+    public enum ShapeList { Ellipse, Rectangle }
 
     public class ShapeManager
     {
-        public MainWindow window { get; set; }
+        public MainWindow Window { get; set; }
         public Shape NewShape { get; set; }
         public List<string> ListShapes { get; set; } = new List<string>();
 
-        public ShapeManager( MainWindow w)
+        public ShapeManager(MainWindow w)
         {
-            window = w;
+            Window = w;
             ListShapes.Add("Ellipse");
             ListShapes.Add("Rectangle");
         }
+        #region Shape Creation
 
-        public Shape CreateNewShape(string shapeType, int w, int h, byte r, byte g, byte b)
+        public Shape CreateNewShape(ShapeList shapeList, int w, int h, byte r, byte g, byte b)
         {
-            ShapeList shapeList = new ShapeList();
-            
             switch (shapeList)
             {
                 case ShapeList.Ellipse:
                     NewShape = CreateNewEllipse(w, h, r, g, b);
                     break;
                 case ShapeList.Rectangle:
-                    NewShape = CreateNewRectangle(w, h, r, g, b);
-                    break;
-                default:
-                    break;
-            }
-
-            return NewShape;
-        }
-
-        public Shape CreateNewExampleShape(string shapeType, int w, int h, byte r, byte g, byte b)
-        {
-            switch (shapeType)
-            {
-                case "Ellipse":
-                    if (w > window.cvs_Example.Width)
-                    {
-                        w = (int)window.cvs_Example.Width;
-                        
-                    }
-                    if (h > window.cvs_Example.Height)
-                    {
-                        h = (int)window.cvs_Example.Height;
-                    }
-                    NewShape = CreateNewEllipse(w, h, r, g, b);
-                    break;
-                case "Rectangle":
-                    if (w > window.cvs_Example.Width)
-                    {
-                        w = (int)window.cvs_Example.Width;
-
-                    }
-                    if (h > window.cvs_Example.Height)
-                    {
-                        h = (int)window.cvs_Example.Height;
-                    }
                     NewShape = CreateNewRectangle(w, h, r, g, b);
                     break;
                 default:
@@ -106,5 +70,56 @@ namespace DrawApp
             return NewShape;
         }
 
+        #endregion
+
+        #region Shape Example Creation
+        //public Shape CreateNewExampleShape(string shapeType, int w, int h, byte r, byte g, byte b)
+        //{
+        //    switch (shapeType)
+        //    {
+        //        case "Ellipse":
+        //            if (w > window.cvs_Example.Width)
+        //            {
+        //                w = (int)window.cvs_Example.Width;
+
+        //            }
+        //            if (h > window.cvs_Example.Height)
+        //            {
+        //                h = (int)window.cvs_Example.Height;
+        //            }
+        //            NewShape = CreateNewEllipse(w, h, r, g, b);
+        //            break;
+        //        case "Rectangle":
+        //            if (w > window.cvs_Example.Width)
+        //            {
+        //                w = (int)window.cvs_Example.Width;
+
+        //            }
+        //            if (h > window.cvs_Example.Height)
+        //            {
+        //                h = (int)window.cvs_Example.Height;
+        //            }
+        //            NewShape = CreateNewRectangle(w, h, r, g, b);
+        //            break;
+        //        default:
+        //            break;
+        //    }
+
+        //    return NewShape;
+        //}
+        #endregion
+
+
+        public Color AddColor(byte r, byte g, byte b)
+        {
+            Color c = new Color
+            {
+                A = 255,
+                R = r,
+                G = g,
+                B = b
+            };
+            return c;
+        }
     }
 }
