@@ -241,7 +241,7 @@ namespace DrawApp
 
         #endregion
 
-
+        
 
         private void bt_ClearAll_Click(object sender, RoutedEventArgs e)
         {
@@ -256,5 +256,37 @@ namespace DrawApp
             shapeExample = null;
         }
 
+        private void DrawApp_Closed(object sender, EventArgs e)
+        {
+            if (cvs_Drawing.Children != null)
+            {
+                foreach (var shape in cvs_Drawing.Children)
+                {
+                    Shape sh = (Shape)shape;
+                    SAVED_DRAWING drawing = new SAVED_DRAWING()
+                    {
+                        X = Canvas.GetTop(sh),
+                        Y = Canvas.GetLeft(sh),
+                    };
+
+                    ctx.SAVED_DRAWINGs.InsertOnSubmit(drawing);
+                    ctx.SubmitChanges();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Empty");
+            }
+
+            // Create new method in ColorManager to recreate shapes on the canvas after starting the app. vb: public Redraw (X, Y, R, G, B, ...)
+
+            var list = from c in ctx.SAVED_DRAWINGs
+                       select c;
+
+            foreach (var item in list)
+            {
+                MessageBox.Show("X: " +item.X+" Y: " + item.Y);
+            }
+        }
     }
 }

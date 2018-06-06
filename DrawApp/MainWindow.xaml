@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DrawApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="761.145" Width="1283.735">
+        Title="MainWindow" Height="761.145" Width="1283.735" Closed="DrawApp_Closed">
     <Grid>
         <Label Content="Red" HorizontalAlignment="Left" Margin="544,16,0,0" VerticalAlignment="Top"/>
         <Label Content="Green" HorizontalAlignment="Left" Margin="544,56,0,0" VerticalAlignment="Top"/>

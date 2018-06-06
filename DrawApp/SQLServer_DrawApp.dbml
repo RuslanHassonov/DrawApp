@@ -16,17 +16,14 @@
       <Column Name="Width" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Height" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Color_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Association Name="SAVED_SHAPE_SAVED_DRAWING" Member="SAVED_DRAWINGs" ThisKey="Shape_ID" OtherKey="Shape_ID" Type="SAVED_DRAWING" />
       <Association Name="SAVED_COLOR_SAVED_SHAPE" Member="SAVED_COLOR" ThisKey="Color_ID" OtherKey="Color_ID" Type="SAVED_COLOR" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.SAVED_DRAWING" Member="SAVED_DRAWINGs">
     <Type Name="SAVED_DRAWING">
       <Column Name="Drawing_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Shape_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="X" Type="System.Double" DbType="Float" CanBeNull="true" />
       <Column Name="Y" Type="System.Double" DbType="Float" CanBeNull="true" />
-      <Association Name="SAVED_SHAPE_SAVED_DRAWING" Member="SAVED_SHAPE" ThisKey="Shape_ID" OtherKey="Shape_ID" Type="SAVED_SHAPE" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

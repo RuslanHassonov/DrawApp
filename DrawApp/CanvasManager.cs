@@ -37,7 +37,5 @@ namespace DrawApp
 
             return Shape;
         }
-
-
     }
 }
