@@ -36,6 +36,9 @@ namespace DrawApp
     partial void InsertSAVED_SHAPE(SAVED_SHAPE instance);
     partial void UpdateSAVED_SHAPE(SAVED_SHAPE instance);
     partial void DeleteSAVED_SHAPE(SAVED_SHAPE instance);
+    partial void InsertSAVED_DRAWING(SAVED_DRAWING instance);
+    partial void UpdateSAVED_DRAWING(SAVED_DRAWING instance);
+    partial void DeleteSAVED_DRAWING(SAVED_DRAWING instance);
     #endregion
 		
 		public SQLServer_DrawAppDataContext() : 
@@ -81,6 +84,14 @@ namespace DrawApp
 			get
 			{
 				return this.GetTable<SAVED_SHAPE>();
+			}
+		}
+		
+		public System.Data.Linq.Table<SAVED_DRAWING> SAVED_DRAWINGs
+		{
+			get
+			{
+				return this.GetTable<SAVED_DRAWING>();
 			}
 		}
 	}
@@ -263,6 +274,8 @@ namespace DrawApp
 		
 		private System.Nullable<int> _Color_ID;
 		
+		private EntitySet<SAVED_DRAWING> _SAVED_DRAWINGs;
+		
 		private EntityRef<SAVED_COLOR> _SAVED_COLOR;
 		
     #region Extensibility Method Definitions
@@ -283,6 +296,7 @@ namespace DrawApp
 		
 		public SAVED_SHAPE()
 		{
+			this._SAVED_DRAWINGs = new EntitySet<SAVED_DRAWING>(new Action<SAVED_DRAWING>(this.attach_SAVED_DRAWINGs), new Action<SAVED_DRAWING>(this.detach_SAVED_DRAWINGs));
 			this._SAVED_COLOR = default(EntityRef<SAVED_COLOR>);
 			OnCreated();
 		}
@@ -391,6 +405,19 @@ namespace DrawApp
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SAVED_SHAPE_SAVED_DRAWING", Storage="_SAVED_DRAWINGs", ThisKey="Shape_ID", OtherKey="Shape_ID")]
+		public EntitySet<SAVED_DRAWING> SAVED_DRAWINGs
+		{
+			get
+			{
+				return this._SAVED_DRAWINGs;
+			}
+			set
+			{
+				this._SAVED_DRAWINGs.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SAVED_COLOR_SAVED_SHAPE", Storage="_SAVED_COLOR", ThisKey="Color_ID", OtherKey="Color_ID", IsForeignKey=true)]
 		public SAVED_COLOR SAVED_COLOR
 		{
@@ -421,6 +448,193 @@ namespace DrawApp
 						this._Color_ID = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("SAVED_COLOR");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_SAVED_DRAWINGs(SAVED_DRAWING entity)
+		{
+			this.SendPropertyChanging();
+			entity.SAVED_SHAPE = this;
+		}
+		
+		private void detach_SAVED_DRAWINGs(SAVED_DRAWING entity)
+		{
+			this.SendPropertyChanging();
+			entity.SAVED_SHAPE = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.SAVED_DRAWING")]
+	public partial class SAVED_DRAWING : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Drawing_ID;
+		
+		private int _Shape_ID;
+		
+		private System.Nullable<double> _X;
+		
+		private System.Nullable<double> _Y;
+		
+		private EntityRef<SAVED_SHAPE> _SAVED_SHAPE;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnDrawing_IDChanging(int value);
+    partial void OnDrawing_IDChanged();
+    partial void OnShape_IDChanging(int value);
+    partial void OnShape_IDChanged();
+    partial void OnXChanging(System.Nullable<double> value);
+    partial void OnXChanged();
+    partial void OnYChanging(System.Nullable<double> value);
+    partial void OnYChanged();
+    #endregion
+		
+		public SAVED_DRAWING()
+		{
+			this._SAVED_SHAPE = default(EntityRef<SAVED_SHAPE>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Drawing_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Drawing_ID
+		{
+			get
+			{
+				return this._Drawing_ID;
+			}
+			set
+			{
+				if ((this._Drawing_ID != value))
+				{
+					this.OnDrawing_IDChanging(value);
+					this.SendPropertyChanging();
+					this._Drawing_ID = value;
+					this.SendPropertyChanged("Drawing_ID");
+					this.OnDrawing_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Shape_ID", DbType="Int NOT NULL")]
+		public int Shape_ID
+		{
+			get
+			{
+				return this._Shape_ID;
+			}
+			set
+			{
+				if ((this._Shape_ID != value))
+				{
+					if (this._SAVED_SHAPE.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnShape_IDChanging(value);
+					this.SendPropertyChanging();
+					this._Shape_ID = value;
+					this.SendPropertyChanged("Shape_ID");
+					this.OnShape_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_X", DbType="Float")]
+		public System.Nullable<double> X
+		{
+			get
+			{
+				return this._X;
+			}
+			set
+			{
+				if ((this._X != value))
+				{
+					this.OnXChanging(value);
+					this.SendPropertyChanging();
+					this._X = value;
+					this.SendPropertyChanged("X");
+					this.OnXChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Y", DbType="Float")]
+		public System.Nullable<double> Y
+		{
+			get
+			{
+				return this._Y;
+			}
+			set
+			{
+				if ((this._Y != value))
+				{
+					this.OnYChanging(value);
+					this.SendPropertyChanging();
+					this._Y = value;
+					this.SendPropertyChanged("Y");
+					this.OnYChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SAVED_SHAPE_SAVED_DRAWING", Storage="_SAVED_SHAPE", ThisKey="Shape_ID", OtherKey="Shape_ID", IsForeignKey=true)]
+		public SAVED_SHAPE SAVED_SHAPE
+		{
+			get
+			{
+				return this._SAVED_SHAPE.Entity;
+			}
+			set
+			{
+				SAVED_SHAPE previousValue = this._SAVED_SHAPE.Entity;
+				if (((previousValue != value) 
+							|| (this._SAVED_SHAPE.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._SAVED_SHAPE.Entity = null;
+						previousValue.SAVED_DRAWINGs.Remove(this);
+					}
+					this._SAVED_SHAPE.Entity = value;
+					if ((value != null))
+					{
+						value.SAVED_DRAWINGs.Add(this);
+						this._Shape_ID = value.Shape_ID;
+					}
+					else
+					{
+						this._Shape_ID = default(int);
+					}
+					this.SendPropertyChanged("SAVED_SHAPE");
 				}
 			}
 		}

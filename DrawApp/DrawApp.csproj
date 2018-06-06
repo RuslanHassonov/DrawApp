@@ -56,6 +56,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CanvasManager.cs" />
+    <Compile Include="ColorManager.cs" />
     <Compile Include="SavedColor.cs" />
     <Compile Include="SavedShape.cs" />
     <Compile Include="ShapeManager.cs" />

@@ -21,6 +21,7 @@ namespace DrawApp
     {
         public MainWindow Window { get; set; }
         public Shape NewShape { get; set; }
+        public ColorManager ColorManager { get; set; }
         public List<string> ListShapes { get; set; } = new List<string>();
 
         public ShapeManager(MainWindow w)
@@ -72,54 +73,58 @@ namespace DrawApp
 
         #endregion
 
-        #region Shape Example Creation
-        //public Shape CreateNewExampleShape(string shapeType, int w, int h, byte r, byte g, byte b)
-        //{
-        //    switch (shapeType)
-        //    {
-        //        case "Ellipse":
-        //            if (w > window.cvs_Example.Width)
-        //            {
-        //                w = (int)window.cvs_Example.Width;
-
-        //            }
-        //            if (h > window.cvs_Example.Height)
-        //            {
-        //                h = (int)window.cvs_Example.Height;
-        //            }
-        //            NewShape = CreateNewEllipse(w, h, r, g, b);
-        //            break;
-        //        case "Rectangle":
-        //            if (w > window.cvs_Example.Width)
-        //            {
-        //                w = (int)window.cvs_Example.Width;
-
-        //            }
-        //            if (h > window.cvs_Example.Height)
-        //            {
-        //                h = (int)window.cvs_Example.Height;
-        //            }
-        //            NewShape = CreateNewRectangle(w, h, r, g, b);
-        //            break;
-        //        default:
-        //            break;
-        //    }
-
-        //    return NewShape;
-        //}
-        #endregion
-
-
-        public Color AddColor(byte r, byte g, byte b)
+        public void LoadShapes()
         {
-            Color c = new Color
+            SQLServer_DrawAppDataContext ctx = new SQLServer_DrawAppDataContext();
+            ColorManager = new ColorManager(Window);
+            try
             {
-                A = 255,
-                R = r,
-                G = g,
-                B = b
-            };
-            return c;
+                var list = from s in ctx.SAVED_SHAPEs
+                           from c in ctx.SAVED_COLORs
+                           where s.Color_ID == c.Color_ID
+                           select new SavedShape
+                           {
+                               W = (int)s.Width,
+                               H = (int)s.Height,
+                               Shape = s.Shape,
+                               R = (byte)c.Red,
+                               G = (byte)c.Green,
+                               B = (byte)c.Blue,
+                               Shape_ID = s.Shape_ID
+                           };
+
+                foreach (var item in list)
+                {
+                    StackPanel stack = new StackPanel
+                    {
+                        Orientation = Orientation.Horizontal
+                    };
+
+                    Label colorLabel = new Label
+                    {
+                        Width = 40,
+                        Height = 30
+                    };
+                    Color color = ColorManager.AddColor(item.R, item.G, item.B);
+                    colorLabel.Background = new SolidColorBrush(color);
+
+                    Label descriptionLabel = new Label
+                    {
+                        Content = item.ToString(item.Shape)
+                    };
+
+                    stack.Children.Add(colorLabel);
+                    stack.Children.Add(descriptionLabel);
+                    stack.Tag = item;
+
+                    Window.lb_ShapeTemplates.Items.Add(stack);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show("Error " + ex.Message);
+            }
         }
     }
 }

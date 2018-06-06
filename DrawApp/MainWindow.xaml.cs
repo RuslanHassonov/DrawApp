@@ -26,6 +26,7 @@ namespace DrawApp
         SQLServer_DrawAppDataContext ctx = new SQLServer_DrawAppDataContext();
         ShapeManager sm;
         CanvasManager cm;
+        ColorManager clrm;
         Shape shapeExample;
 
         public MainWindow()
@@ -33,9 +34,10 @@ namespace DrawApp
             InitializeComponent();
             sm = new ShapeManager(this);
             cm = new CanvasManager(this);
+            clrm = new ColorManager(this);
             cb_Shapes.ItemsSource = new ShapeManager(this).ListShapes;
-            LoadColors();
-            LoadShapes();
+            clrm.LoadColors();
+            sm.LoadShapes();
         }
 
         #region Shape Definition and Drawing
@@ -52,7 +54,7 @@ namespace DrawApp
                     byte g = Byte.Parse(tb_GreenValue.Text);
                     byte b = Byte.Parse(tb_BlueValue.Text);
                     cvs_Example.Children.Clear();
-                    shapeExample = sm.CreateNewShape((cb_Shapes.SelectedItem.ToString() == ShapeList.Ellipse.ToString() ? ShapeList.Ellipse : ShapeList.Rectangle),((int)cvs_Example.Width < w ? (int)cvs_Example.Width : w), ((int)cvs_Example.Height < h ? (int)cvs_Example.Height : h), r, g, b);
+                    shapeExample = sm.CreateNewShape((cb_Shapes.SelectedItem.ToString() == ShapeList.Ellipse.ToString() ? ShapeList.Ellipse : ShapeList.Rectangle), ((int)cvs_Example.Width < w ? (int)cvs_Example.Width : w), ((int)cvs_Example.Height < h ? (int)cvs_Example.Height : h), r, g, b);
                     Canvas.SetTop(shapeExample, 0);
                     Canvas.SetLeft(shapeExample, 0);
                     cvs_Example.Children.Add(shapeExample);
@@ -95,56 +97,24 @@ namespace DrawApp
         }
 
         #endregion
-
+        
         #region Color Saving and Selecting with DB
-
-        private void LoadColors()
-        {
-            try
-            {
-                var list = from c in ctx.SAVED_COLORs
-                           select new SavedColor
-                           {
-                               R = (byte)c.Red,
-                               G = (byte)c.Green,
-                               B = (byte)c.Blue
-                           };
-                foreach (var item in list)
-                {
-                    Color color = sm.AddColor(item.R, item.G, item.B);
-                    Rectangle colorRec = new Rectangle
-                    {
-                        Height = 20,
-                        Fill = new SolidColorBrush(color)
-                    };
-                    lb_ColourTemplates.Items.Add(colorRec);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error" + ex.Message);
-            }
-        }
 
         private void bt_SaveColour_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                byte r = Byte.Parse(tb_RedValue.Text);
-                byte g = Byte.Parse(tb_GreenValue.Text);
-                byte b = Byte.Parse(tb_BlueValue.Text);
-
                 SAVED_COLOR c = new SAVED_COLOR()
                 {
-                    Red = r,
-                    Green = g,
-                    Blue = b
+                    Red = Byte.Parse(tb_RedValue.Text),
+                    Green = Byte.Parse(tb_GreenValue.Text),
+                    Blue = Byte.Parse(tb_BlueValue.Text)
                 };
                 ctx.SAVED_COLORs.InsertOnSubmit(c);
                 ctx.SubmitChanges();
 
                 lb_ColourTemplates.Items.Clear();
-                LoadColors();
+                clrm.LoadColors();
             }
             catch (FormatException)
             {
@@ -176,61 +146,10 @@ namespace DrawApp
 
         #region Shape Saving and Selecting with DB
 
-        private void LoadShapes()
-        {
-            try
-            {
-                var list = from s in ctx.SAVED_SHAPEs
-                           from c in ctx.SAVED_COLORs
-                           where s.Color_ID == c.Color_ID
-                           select new SavedShape
-                           {
-                               W = (int)s.Width,
-                               H = (int)s.Height,
-                               Shape = s.Shape,
-                               R = (byte)c.Red,
-                               G = (byte)c.Green,
-                               B = (byte)c.Blue,
-                               Shape_ID = s.Shape_ID
-                           };
-
-                foreach (var item in list)
-                {
-                    StackPanel stack = new StackPanel();
-                    stack.Orientation = Orientation.Horizontal;
-
-                    Label colorLabel = new Label();
-                    colorLabel.Width = 40;
-                    colorLabel.Height = 30;
-                    Color color = sm.AddColor(item.R, item.G, item.B);
-                    colorLabel.Background = new SolidColorBrush(color);
-
-                    Label descriptionLabel = new Label();
-                    descriptionLabel.Content = item.ToString(item.Shape);
-
-                    stack.Children.Add(colorLabel);
-                    stack.Children.Add(descriptionLabel);
-                    stack.Tag = item;
-
-                    lb_ShapeTemplates.Items.Add(stack);
-                }
-            }
-            catch (Exception ex)
-            {
-
-                MessageBox.Show("Error " + ex.Message);
-            }
-        }
-
         private void bt_SaveShape_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                int w = Int32.Parse(tb_Width.Text);
-                int h = Int32.Parse(tb_Height.Text);
-                byte r = Byte.Parse(tb_RedValue.Text);
-                byte g = Byte.Parse(tb_GreenValue.Text);
-                byte b = Byte.Parse(tb_BlueValue.Text);
                 string name = string.Empty;
 
                 if (cb_Shapes.SelectedItem.ToString() == "Ellipse" && tb_Height.Text == tb_Width.Text)
@@ -252,15 +171,12 @@ namespace DrawApp
 
                 SAVED_COLOR c = new SAVED_COLOR()
                 {
-                    Red = r,
-                    Green = g,
-                    Blue = b
+                    Red = Byte.Parse(tb_RedValue.Text),
+                    Green = Byte.Parse(tb_GreenValue.Text),
+                    Blue = Byte.Parse(tb_BlueValue.Text)
                 };
 
                 SAVED_COLOR savedColor = ctx.SAVED_COLORs.Where(sc => sc.Red == c.Red && sc.Blue == c.Blue && sc.Green == c.Green).FirstOrDefault();
-                //SAVED_COLOR sAVED_COLOR2 = (from sc in ctx.SAVED_COLORs
-                //                            where sc.Red == c.Red && sc.Blue == c.Blue && sc.Green == c.Green
-                //                            select sc).FirstOrDefault();
                 if (savedColor == null)
                 {
                     ctx.SAVED_COLORs.InsertOnSubmit(c);
@@ -273,8 +189,8 @@ namespace DrawApp
 
                 SAVED_SHAPE s = new SAVED_SHAPE()
                 {
-                    Width = w,
-                    Height = h,
+                    Width = Int32.Parse(tb_Width.Text),
+                    Height = Int32.Parse(tb_Height.Text),
                     Shape = name,
                     Color_ID = c.Color_ID
                 };
@@ -283,7 +199,7 @@ namespace DrawApp
                 ctx.SubmitChanges();
 
                 lb_ShapeTemplates.Items.Clear();
-                LoadShapes();
+                sm.LoadShapes();
             }
             catch (FormatException)
             {
@@ -324,6 +240,7 @@ namespace DrawApp
         }
 
         #endregion
+
 
 
         private void bt_ClearAll_Click(object sender, RoutedEventArgs e)
