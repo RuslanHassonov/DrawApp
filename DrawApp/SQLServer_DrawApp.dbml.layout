@@ -2,30 +2,37 @@
 <ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="SQLServer_DrawApp">
   <DataContextMoniker Name="/SQLServer_DrawAppDataContext" />
   <nestedChildShapes>
-    <classShape Id="2dd0484f-4dfa-4459-9358-f9fbf7a9df71" absoluteBounds="7.5, 0.875, 2, 1.5785953776041664">
+    <classShape Id="6dc111d3-9509-4e8c-96e2-a4e775152c47" absoluteBounds="0.75, 1, 2, 1.5785953776041664">
       <DataClassMoniker Name="/SQLServer_DrawAppDataContext/SAVED_COLOR" />
       <nestedChildShapes>
-        <elementListCompartment Id="7e76c33b-4838-4861-b3d6-cc6eaaf50f13" absoluteBounds="7.515, 1.335, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="cbe6b1e8-3c88-48f0-ba34-71701f35d65b" absoluteBounds="0.765, 1.46, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="5c6fff9d-82ec-4e77-bca6-72190c9488bc" absoluteBounds="4, 0.75, 2, 1.7708968098958329">
+    <classShape Id="bea5e84a-4517-4f3a-aa74-38416c1f674e" absoluteBounds="3.5, 0.875, 2, 1.7708968098958329">
       <DataClassMoniker Name="/SQLServer_DrawAppDataContext/SAVED_SHAPE" />
       <nestedChildShapes>
-        <elementListCompartment Id="790791b5-63a1-4c87-aca0-4f4e56410f33" absoluteBounds="4.0150000000000006, 1.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="ab577a3d-0c86-493c-ab0d-8d445fd8db1f" absoluteBounds="3.515, 1.335, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(7.5 : 1.66429768880208); (6 : 1.66429768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/SQLServer_DrawAppDataContext/SAVED_COLOR/SAVED_COLOR_SAVED_SHAPE" />
-      <nodes>
-        <classShapeMoniker Id="2dd0484f-4dfa-4459-9358-f9fbf7a9df71" />
-        <classShapeMoniker Id="5c6fff9d-82ec-4e77-bca6-72190c9488bc" />
-      </nodes>
-    </associationConnector>
-    <classShape Id="09ce16d3-778d-43bb-a7dc-295ed832448e" absoluteBounds="1.5, 2.75, 2, 1.3862939453125">
+    <classShape Id="a7b72c0e-f647-4284-a53b-f701be473253" absoluteBounds="6.25, 1, 2, 1.5785953776041666">
       <DataClassMoniker Name="/SQLServer_DrawAppDataContext/SAVED_DRAWING" />
       <nestedChildShapes>
-        <elementListCompartment Id="d317fea4-d2ff-428c-974f-5ee54047f73c" absoluteBounds="1.5149999999999997, 3.21, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="e1eb52ba-8126-411b-85de-1783f04e6b57" absoluteBounds="6.265, 1.46, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
+    <associationConnector edgePoints="[(2.75 : 1.78929768880208); (3.5 : 1.78929768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SQLServer_DrawAppDataContext/SAVED_COLOR/SAVED_COLOR_SAVED_SHAPE" />
+      <nodes>
+        <classShapeMoniker Id="6dc111d3-9509-4e8c-96e2-a4e775152c47" />
+        <classShapeMoniker Id="bea5e84a-4517-4f3a-aa74-38416c1f674e" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.5 : 1.78929768880208); (6.25 : 1.78929768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SQLServer_DrawAppDataContext/SAVED_SHAPE/SAVED_SHAPE_SAVED_DRAWING" />
+      <nodes>
+        <classShapeMoniker Id="bea5e84a-4517-4f3a-aa74-38416c1f674e" />
+        <classShapeMoniker Id="a7b72c0e-f647-4284-a53b-f701be473253" />
+      </nodes>
+    </associationConnector>
   </nestedChildShapes>
 </ordesignerObjectsDiagram>

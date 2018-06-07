@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="2018_Hassonov_Ruslan_C#" Class="SQLServer_DrawAppDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=sqlmobyus.vlan77.be;Initial Catalog=2018_Hassonov_Ruslan_C#;Persist Security Info=True;User ID=cursist1718_c0109030" SettingsObjectName="DrawApp.Properties.Settings" SettingsPropertyName="_2018_Hassonov_Ruslan_C_ConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="AppSettings" ConnectionString="Data Source=sqlmobyus.vlan77.be;Initial Catalog=2018_Hassonov_Ruslan_C#;User ID=cursist1718_c0109030" SettingsObjectName="DrawApp.Properties.Settings" SettingsPropertyName="_2018_Hassonov_Ruslan_C_ConnectionString2" Provider="System.Data.SqlClient" />
   <Table Name="dbo.SAVED_COLOR" Member="SAVED_COLORs">
     <Type Name="SAVED_COLOR">
       <Column Name="Color_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -16,14 +16,17 @@
       <Column Name="Width" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Height" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Color_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Association Name="SAVED_COLOR_SAVED_SHAPE" Member="SAVED_COLOR" ThisKey="Color_ID" OtherKey="Color_ID" Type="SAVED_COLOR" IsForeignKey="true" />
+      <Association Name="SAVED_SHAPE_SAVED_DRAWING" Member="SAVED_DRAWINGs" ThisKey="Shape_ID" OtherKey="Shape_ID" Type="SAVED_DRAWING" />
+      <Association Name="SAVED_COLOR_SAVED_SHAPE" Member="SAVED_COLOR" ThisKey="Color_ID" OtherKey="Color_ID" Type="SAVED_COLOR" IsForeignKey="true" DeleteRule="CASCADE" />
     </Type>
   </Table>
   <Table Name="dbo.SAVED_DRAWING" Member="SAVED_DRAWINGs">
     <Type Name="SAVED_DRAWING">
       <Column Name="Drawing_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Shape_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="X" Type="System.Double" DbType="Float" CanBeNull="true" />
       <Column Name="Y" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Association Name="SAVED_SHAPE_SAVED_DRAWING" Member="SAVED_SHAPE" ThisKey="Shape_ID" OtherKey="Shape_ID" Type="SAVED_SHAPE" IsForeignKey="true" DeleteRule="CASCADE" />
     </Type>
   </Table>
 </Database>

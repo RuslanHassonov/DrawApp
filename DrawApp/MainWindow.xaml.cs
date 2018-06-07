@@ -260,13 +260,13 @@ namespace DrawApp
         {
             if (cvs_Drawing.Children != null)
             {
-                foreach (var shape in cvs_Drawing.Children)
+                foreach (var shapeOnCanvas in cvs_Drawing.Children)
                 {
-                    Shape sh = (Shape)shape;
+                    Shape shape = (Shape)shapeOnCanvas;
                     SAVED_DRAWING drawing = new SAVED_DRAWING()
                     {
-                        X = Canvas.GetTop(sh),
-                        Y = Canvas.GetLeft(sh),
+                        X = Canvas.GetTop(shape),
+                        Y = Canvas.GetLeft(shape),
                     };
 
                     ctx.SAVED_DRAWINGs.InsertOnSubmit(drawing);
@@ -285,7 +285,7 @@ namespace DrawApp
 
             foreach (var item in list)
             {
-                MessageBox.Show("X: " +item.X+" Y: " + item.Y);
+                MessageBox.Show("X: " + item.X + " Y: " + item.Y);
             }
         }
     }
