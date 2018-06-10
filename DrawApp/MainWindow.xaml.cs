@@ -103,9 +103,17 @@ namespace DrawApp
                     Green = Byte.Parse(tb_GreenValue.Text),
                     Blue = Byte.Parse(tb_BlueValue.Text)
                 };
-                ctx.TblColors.InsertOnSubmit(c);
-                ctx.SubmitChanges();
 
+                TblColor savedColor = ctx.TblColors.Where(sc => sc.Red == c.Red && sc.Blue == c.Blue && sc.Green == c.Green).FirstOrDefault();
+                if (savedColor == null)
+                {
+                    ctx.TblColors.InsertOnSubmit(c);
+                    ctx.SubmitChanges();
+                }
+                else
+                {
+                    MessageBox.Show("This color already exists.");
+                }
                 lb_ColourTemplates.Items.Clear();
                 clrm.LoadColors();
             }
@@ -190,7 +198,6 @@ namespace DrawApp
 
                 ctx.TblShapes.InsertOnSubmit(s);
                 ctx.SubmitChanges();
-
                 lb_ShapeTemplates.Items.Clear();
                 sm.LoadShapes();
             }
@@ -265,6 +272,17 @@ namespace DrawApp
             ctx.TblOverviews.InsertOnSubmit(newCanvas);
             ctx.SubmitChanges();
             LoadDrawings();
+        }
+
+        private void dg_DrawingOverview_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            TblOverview chosenItem = dg_DrawingOverview.SelectedItem as TblOverview;
+            if (chosenItem!=null)
+            {
+                CanvasWindow canvas = cm.ReopenCanvas(chosenItem);
+                canvas.Title = chosenItem.Name;
+                canvas.Show();
+            }
         }
     }
         

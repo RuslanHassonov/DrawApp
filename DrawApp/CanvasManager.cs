@@ -21,6 +21,7 @@ namespace DrawApp
     public class CanvasManager
     {
         public string CanvasName { get; set; }
+        public CanvasWindow CanvasWindow { get; set; }
 
         public string CreateNewCanvas(string name)
         {
@@ -28,34 +29,10 @@ namespace DrawApp
             return CanvasName;
         }
 
-        //public Shape Draw(ShapeList shapeName, int w, int h, byte r, byte g, byte b, MouseButtonEventArgs e)
-        //{
-        //    Shape = ShapeManager.CreateNewShape(shapeName, w, h, r, g, b);
-        //    Point location = e.GetPosition(Window.cvs_Drawing);
-        //    Canvas.SetTop(Shape, location.Y);
-        //    Canvas.SetLeft(Shape, location.X);
-
-        //    return Shape;
-        //}
-
-
-        //private void Canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        //{
-        //    try
-        //    {
-        //        int w = Int32.Parse(tb_Width.Text);
-        //        int h = Int32.Parse(tb_Height.Text);
-        //        byte r = Byte.Parse(tb_RedValue.Text);
-        //        byte g = Byte.Parse(tb_GreenValue.Text);
-        //        byte b = Byte.Parse(tb_BlueValue.Text);
-        //        //Shape shapeDrawing = cm.Draw((cb_Shapes.SelectedItem.ToString() == ShapeList.Ellipse.ToString() ? ShapeList.Ellipse : ShapeList.Rectangle), w, h, r, g, b, e);
-        //        //cvs_Drawing.Children.Add(shapeDrawing);
-        //    }
-        //    catch (Exception)
-        //    {
-        //        MessageBox.Show("Error occured - Please provide all necessary values before using this canvas.");
-        //    }
-        //}
-
+        public CanvasWindow ReopenCanvas(TblOverview overviewSelection)
+        {
+            CanvasWindow = new CanvasWindow(overviewSelection);
+            return CanvasWindow;
+        }
     }
 }

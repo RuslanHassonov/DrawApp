@@ -28,7 +28,7 @@
         <ListBox x:Name="lb_ShapeTemplates" HorizontalAlignment="Left" Height="264" Margin="815,252,0,0" VerticalAlignment="Top" Width="265" SelectionChanged="lb_ShapeTemplates_SelectionChanged"/>
         <Button x:Name="bt_SaveColour" Content="Save Colour" HorizontalAlignment="Left" Margin="104,155,0,0" VerticalAlignment="Top" Width="88" Click="bt_SaveColour_Click"/>
         <Button x:Name="bt_SaveShape" Content="Save Shape" HorizontalAlignment="Left" Margin="352,155,0,0" VerticalAlignment="Top" Width="74" Click="bt_SaveShape_Click"/>
-        <DataGrid x:Name="dg_DrawingOverview" HorizontalAlignment="Left" HorizontalContentAlignment="Stretch" Height="239" Margin="28,252,0,0" VerticalAlignment="Top" Width="448"/>
+        <DataGrid x:Name="dg_DrawingOverview" HorizontalAlignment="Left" HorizontalContentAlignment="Stretch" Height="239" Margin="28,252,0,0" VerticalAlignment="Top" Width="448" SelectionMode="Single" MouseDoubleClick="dg_DrawingOverview_MouseDoubleClick"/>
         <Label Content="Drawings" HorizontalAlignment="Left" Margin="28,218,0,0" VerticalAlignment="Top"/>
         <CheckBox Content="Local Backup" HorizontalAlignment="Left" Margin="305,224,0,0" VerticalAlignment="Top"/>
         <Button x:Name="bt_DeleteDrawing" Content="Delete Drawing" HorizontalAlignment="Left" Margin="28,496,0,0" VerticalAlignment="Top" Width="114"/>

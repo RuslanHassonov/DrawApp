@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11.375, 8.5" name="SQLServer_DrawApp">
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11.25, 8.5" name="SQLServer_DrawApp">
   <DataContextMoniker Name="/SQLServer_DrawAppDataContext" />
   <nestedChildShapes>
     <classShape Id="90a589b9-c2a3-4243-a5f2-e1f918b3d9d5" absoluteBounds="2.5, 0.5, 2, 1.5785953776041664">
@@ -34,16 +34,16 @@
         <classShapeMoniker Id="2035eba5-33db-47a0-8999-a72ad08265ef" />
       </nodes>
     </associationConnector>
-    <classShape Id="f8d4131e-8766-4556-b753-fcf3730f4bd7" absoluteBounds="9.125, 3, 2, 1.7708968098958331">
+    <classShape Id="5df0e36d-ac8c-4bed-84b7-8efd6d5911fc" absoluteBounds="9, 3.125, 2, 1.7708968098958331">
       <DataClassMoniker Name="/SQLServer_DrawAppDataContext/TblOverview" />
       <nestedChildShapes>
-        <elementListCompartment Id="1da15a76-dc8e-4431-bbc7-ffe325bf072a" absoluteBounds="9.14, 3.46, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="48125c41-69eb-4dde-9f04-5dc606e8f21a" absoluteBounds="9.015, 3.585, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(9.125 : 3.91429768880208); (8 : 3.91429768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(9 : 3.91429768880208); (8 : 3.91429768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/SQLServer_DrawAppDataContext/TblOverview/TblOverview_TblDrawing" />
       <nodes>
-        <classShapeMoniker Id="f8d4131e-8766-4556-b753-fcf3730f4bd7" />
+        <classShapeMoniker Id="5df0e36d-ac8c-4bed-84b7-8efd6d5911fc" />
         <classShapeMoniker Id="2035eba5-33db-47a0-8999-a72ad08265ef" />
       </nodes>
     </associationConnector>
