@@ -1,32 +1,43 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="2018_Hassonov_Ruslan_C#" Class="SQLServer_DrawAppDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="AppSettings" ConnectionString="Data Source=sqlmobyus.vlan77.be;Initial Catalog=2018_Hassonov_Ruslan_C#;User ID=cursist1718_c0109030" SettingsObjectName="DrawApp.Properties.Settings" SettingsPropertyName="_2018_Hassonov_Ruslan_C_ConnectionString2" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.SAVED_COLOR" Member="SAVED_COLORs">
-    <Type Name="SAVED_COLOR">
+  <Table Name="dbo.TblColor" Member="TblColors">
+    <Type Name="TblColor">
       <Column Name="Color_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Red" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Green" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Blue" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Association Name="SAVED_COLOR_SAVED_SHAPE" Member="SAVED_SHAPEs" ThisKey="Color_ID" OtherKey="Color_ID" Type="SAVED_SHAPE" />
+      <Association Name="TblColor_TblShape" Member="TblShapes" ThisKey="Color_ID" OtherKey="Color_ID" Type="TblShape" />
     </Type>
   </Table>
-  <Table Name="dbo.SAVED_SHAPE" Member="SAVED_SHAPEs">
-    <Type Name="SAVED_SHAPE">
+  <Table Name="dbo.TblShape" Member="TblShapes">
+    <Type Name="TblShape">
       <Column Name="Shape_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Shape" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="Width" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Height" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Color_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Association Name="SAVED_SHAPE_SAVED_DRAWING" Member="SAVED_DRAWINGs" ThisKey="Shape_ID" OtherKey="Shape_ID" Type="SAVED_DRAWING" />
-      <Association Name="SAVED_COLOR_SAVED_SHAPE" Member="SAVED_COLOR" ThisKey="Color_ID" OtherKey="Color_ID" Type="SAVED_COLOR" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="TblShape_TblDrawing" Member="TblDrawings" ThisKey="Shape_ID" OtherKey="Shape_ID" Type="TblDrawing" />
+      <Association Name="TblColor_TblShape" Member="TblColor" ThisKey="Color_ID" OtherKey="Color_ID" Type="TblColor" IsForeignKey="true" DeleteRule="CASCADE" />
     </Type>
   </Table>
-  <Table Name="dbo.SAVED_DRAWING" Member="SAVED_DRAWINGs">
-    <Type Name="SAVED_DRAWING">
+  <Table Name="dbo.TblDrawing" Member="TblDrawings">
+    <Type Name="TblDrawing">
       <Column Name="Drawing_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Shape_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="X" Type="System.Double" DbType="Float" CanBeNull="true" />
       <Column Name="Y" Type="System.Double" DbType="Float" CanBeNull="true" />
-      <Association Name="SAVED_SHAPE_SAVED_DRAWING" Member="SAVED_SHAPE" ThisKey="Shape_ID" OtherKey="Shape_ID" Type="SAVED_SHAPE" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="TblShape_TblDrawing" Member="TblShape" ThisKey="Shape_ID" OtherKey="Shape_ID" Type="TblShape" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="TblOverview_TblDrawing" Member="TblOverview" ThisKey="Drawing_ID" OtherKey="Drawing_ID" Type="TblOverview" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TblOverview" Member="TblOverviews">
+    <Type Name="TblOverview">
+      <Column Name="Drawing_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="DateUpdated" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Shape_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="TblOverview_TblDrawing" Member="TblDrawing" ThisKey="Drawing_ID" OtherKey="Drawing_ID" Type="TblDrawing" Cardinality="One" />
     </Type>
   </Table>
 </Database>

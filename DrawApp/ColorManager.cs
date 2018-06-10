@@ -42,7 +42,7 @@ namespace DrawApp
 
             try
             {
-                var list = from c in ctx.SAVED_COLORs
+                var list = from c in ctx.TblColors
                            select new SavedColor
                            {
                                R = (byte)c.Red,

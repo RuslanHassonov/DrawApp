@@ -23,25 +23,37 @@ namespace DrawApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        SQLServer_DrawAppDataContext ctx = new SQLServer_DrawAppDataContext();
-        ShapeManager sm;
-        CanvasManager cm;
-        ColorManager clrm;
-        Shape shapeExample;
+        private SQLServer_DrawAppDataContext ctx = new SQLServer_DrawAppDataContext();
+        private ShapeManager sm;
+        private NewDrawingWindow newDrawingWindow;
+        private CanvasManager cm;
+        private ColorManager clrm;
+        private Shape shapeExample;
 
         public MainWindow()
         {
             InitializeComponent();
             sm = new ShapeManager(this);
-            cm = new CanvasManager(this);
+            cm = new CanvasManager();
             clrm = new ColorManager(this);
             cb_Shapes.ItemsSource = new ShapeManager(this).ListShapes;
             clrm.LoadColors();
             sm.LoadShapes();
+            LoadDrawings();
         }
 
-        #region Shape Definition and Drawing
-
+        private void LoadDrawings()
+        {
+            var list = from o in ctx.TblOverviews
+                       select new
+                       {
+                           Name = o.Name,
+                           DateCreated = o.DateCreated,
+                           DateUpdated = o.DateUpdated
+                       };
+            dg_DrawingOverview.ItemsSource = list;
+        }
+        
         private void cb_Shapes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cb_Shapes.SelectedIndex != -1)
@@ -78,25 +90,6 @@ namespace DrawApp
 
         }
 
-        private void Canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            try
-            {
-                int w = Int32.Parse(tb_Width.Text);
-                int h = Int32.Parse(tb_Height.Text);
-                byte r = Byte.Parse(tb_RedValue.Text);
-                byte g = Byte.Parse(tb_GreenValue.Text);
-                byte b = Byte.Parse(tb_BlueValue.Text);
-                Shape shapeDrawing = cm.Draw((cb_Shapes.SelectedItem.ToString() == ShapeList.Ellipse.ToString() ? ShapeList.Ellipse : ShapeList.Rectangle), w, h, r, g, b, e);
-                cvs_Drawing.Children.Add(shapeDrawing);
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Error occured - Please provide all necessary values before using this canvas.");
-            }
-        }
-
-        #endregion
         
         #region Color Saving and Selecting with DB
 
@@ -104,13 +97,13 @@ namespace DrawApp
         {
             try
             {
-                SAVED_COLOR c = new SAVED_COLOR()
+                TblColor c = new TblColor()
                 {
                     Red = Byte.Parse(tb_RedValue.Text),
                     Green = Byte.Parse(tb_GreenValue.Text),
                     Blue = Byte.Parse(tb_BlueValue.Text)
                 };
-                ctx.SAVED_COLORs.InsertOnSubmit(c);
+                ctx.TblColors.InsertOnSubmit(c);
                 ctx.SubmitChanges();
 
                 lb_ColourTemplates.Items.Clear();
@@ -169,17 +162,17 @@ namespace DrawApp
                     name = "Rectangle";
                 }
 
-                SAVED_COLOR c = new SAVED_COLOR()
+                TblColor c = new TblColor()
                 {
                     Red = Byte.Parse(tb_RedValue.Text),
                     Green = Byte.Parse(tb_GreenValue.Text),
                     Blue = Byte.Parse(tb_BlueValue.Text)
                 };
 
-                SAVED_COLOR savedColor = ctx.SAVED_COLORs.Where(sc => sc.Red == c.Red && sc.Blue == c.Blue && sc.Green == c.Green).FirstOrDefault();
+                TblColor savedColor = ctx.TblColors.Where(sc => sc.Red == c.Red && sc.Blue == c.Blue && sc.Green == c.Green).FirstOrDefault();
                 if (savedColor == null)
                 {
-                    ctx.SAVED_COLORs.InsertOnSubmit(c);
+                    ctx.TblColors.InsertOnSubmit(c);
                     ctx.SubmitChanges();
                 }
                 else
@@ -187,7 +180,7 @@ namespace DrawApp
                     c.Color_ID = savedColor.Color_ID;
                 }
 
-                SAVED_SHAPE s = new SAVED_SHAPE()
+                TblShape s = new TblShape()
                 {
                     Width = Int32.Parse(tb_Width.Text),
                     Height = Int32.Parse(tb_Height.Text),
@@ -195,7 +188,7 @@ namespace DrawApp
                     Color_ID = c.Color_ID
                 };
 
-                ctx.SAVED_SHAPEs.InsertOnSubmit(s);
+                ctx.TblShapes.InsertOnSubmit(s);
                 ctx.SubmitChanges();
 
                 lb_ShapeTemplates.Items.Clear();
@@ -240,9 +233,7 @@ namespace DrawApp
         }
 
         #endregion
-
         
-
         private void bt_ClearAll_Click(object sender, RoutedEventArgs e)
         {
             tb_Width.Clear();
@@ -256,37 +247,25 @@ namespace DrawApp
             shapeExample = null;
         }
 
-        private void DrawApp_Closed(object sender, EventArgs e)
+        private void bt_NewDrawing_Click(object sender, RoutedEventArgs e)
         {
-            if (cvs_Drawing.Children != null)
+            newDrawingWindow = new NewDrawingWindow(this);
+            newDrawingWindow.OnCanvasCreated += OnCanvasCreatedHandler;
+            newDrawingWindow.Show();
+        }
+
+        private void OnCanvasCreatedHandler(object sender, NewCanvasEventArgs e)
+        {
+            TblOverview newCanvas = new TblOverview
             {
-                foreach (var shapeOnCanvas in cvs_Drawing.Children)
-                {
-                    Shape shape = (Shape)shapeOnCanvas;
-                    SAVED_DRAWING drawing = new SAVED_DRAWING()
-                    {
-                        X = Canvas.GetTop(shape),
-                        Y = Canvas.GetLeft(shape),
-                    };
-
-                    ctx.SAVED_DRAWINGs.InsertOnSubmit(drawing);
-                    ctx.SubmitChanges();
-                }
-            }
-            else
-            {
-                MessageBox.Show("Empty");
-            }
-
-            // Create new method in ColorManager to recreate shapes on the canvas after starting the app. vb: public Redraw (X, Y, R, G, B, ...)
-
-            var list = from c in ctx.SAVED_DRAWINGs
-                       select c;
-
-            foreach (var item in list)
-            {
-                MessageBox.Show("X: " + item.X + " Y: " + item.Y);
-            }
+                Name = e.CanvasName,
+                DateCreated = e.CreationDate,
+                DateUpdated = e.CreationDate
+            };
+            ctx.TblOverviews.InsertOnSubmit(newCanvas);
+            ctx.SubmitChanges();
+            LoadDrawings();
         }
     }
+        
 }

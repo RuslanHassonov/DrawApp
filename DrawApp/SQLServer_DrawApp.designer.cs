@@ -30,15 +30,18 @@ namespace DrawApp
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InsertSAVED_COLOR(SAVED_COLOR instance);
-    partial void UpdateSAVED_COLOR(SAVED_COLOR instance);
-    partial void DeleteSAVED_COLOR(SAVED_COLOR instance);
-    partial void InsertSAVED_SHAPE(SAVED_SHAPE instance);
-    partial void UpdateSAVED_SHAPE(SAVED_SHAPE instance);
-    partial void DeleteSAVED_SHAPE(SAVED_SHAPE instance);
-    partial void InsertSAVED_DRAWING(SAVED_DRAWING instance);
-    partial void UpdateSAVED_DRAWING(SAVED_DRAWING instance);
-    partial void DeleteSAVED_DRAWING(SAVED_DRAWING instance);
+    partial void InsertTblColor(TblColor instance);
+    partial void UpdateTblColor(TblColor instance);
+    partial void DeleteTblColor(TblColor instance);
+    partial void InsertTblShape(TblShape instance);
+    partial void UpdateTblShape(TblShape instance);
+    partial void DeleteTblShape(TblShape instance);
+    partial void InsertTblDrawing(TblDrawing instance);
+    partial void UpdateTblDrawing(TblDrawing instance);
+    partial void DeleteTblDrawing(TblDrawing instance);
+    partial void InsertTblOverview(TblOverview instance);
+    partial void UpdateTblOverview(TblOverview instance);
+    partial void DeleteTblOverview(TblOverview instance);
     #endregion
 		
 		public SQLServer_DrawAppDataContext() : 
@@ -71,33 +74,41 @@ namespace DrawApp
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<SAVED_COLOR> SAVED_COLORs
+		public System.Data.Linq.Table<TblColor> TblColors
 		{
 			get
 			{
-				return this.GetTable<SAVED_COLOR>();
+				return this.GetTable<TblColor>();
 			}
 		}
 		
-		public System.Data.Linq.Table<SAVED_SHAPE> SAVED_SHAPEs
+		public System.Data.Linq.Table<TblShape> TblShapes
 		{
 			get
 			{
-				return this.GetTable<SAVED_SHAPE>();
+				return this.GetTable<TblShape>();
 			}
 		}
 		
-		public System.Data.Linq.Table<SAVED_DRAWING> SAVED_DRAWINGs
+		public System.Data.Linq.Table<TblDrawing> TblDrawings
 		{
 			get
 			{
-				return this.GetTable<SAVED_DRAWING>();
+				return this.GetTable<TblDrawing>();
+			}
+		}
+		
+		public System.Data.Linq.Table<TblOverview> TblOverviews
+		{
+			get
+			{
+				return this.GetTable<TblOverview>();
 			}
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.SAVED_COLOR")]
-	public partial class SAVED_COLOR : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TblColor")]
+	public partial class TblColor : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -110,7 +121,7 @@ namespace DrawApp
 		
 		private System.Nullable<int> _Blue;
 		
-		private EntitySet<SAVED_SHAPE> _SAVED_SHAPEs;
+		private EntitySet<TblShape> _TblShapes;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -126,9 +137,9 @@ namespace DrawApp
     partial void OnBlueChanged();
     #endregion
 		
-		public SAVED_COLOR()
+		public TblColor()
 		{
-			this._SAVED_SHAPEs = new EntitySet<SAVED_SHAPE>(new Action<SAVED_SHAPE>(this.attach_SAVED_SHAPEs), new Action<SAVED_SHAPE>(this.detach_SAVED_SHAPEs));
+			this._TblShapes = new EntitySet<TblShape>(new Action<TblShape>(this.attach_TblShapes), new Action<TblShape>(this.detach_TblShapes));
 			OnCreated();
 		}
 		
@@ -212,16 +223,16 @@ namespace DrawApp
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SAVED_COLOR_SAVED_SHAPE", Storage="_SAVED_SHAPEs", ThisKey="Color_ID", OtherKey="Color_ID")]
-		public EntitySet<SAVED_SHAPE> SAVED_SHAPEs
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TblColor_TblShape", Storage="_TblShapes", ThisKey="Color_ID", OtherKey="Color_ID")]
+		public EntitySet<TblShape> TblShapes
 		{
 			get
 			{
-				return this._SAVED_SHAPEs;
+				return this._TblShapes;
 			}
 			set
 			{
-				this._SAVED_SHAPEs.Assign(value);
+				this._TblShapes.Assign(value);
 			}
 		}
 		
@@ -245,21 +256,21 @@ namespace DrawApp
 			}
 		}
 		
-		private void attach_SAVED_SHAPEs(SAVED_SHAPE entity)
+		private void attach_TblShapes(TblShape entity)
 		{
 			this.SendPropertyChanging();
-			entity.SAVED_COLOR = this;
+			entity.TblColor = this;
 		}
 		
-		private void detach_SAVED_SHAPEs(SAVED_SHAPE entity)
+		private void detach_TblShapes(TblShape entity)
 		{
 			this.SendPropertyChanging();
-			entity.SAVED_COLOR = null;
+			entity.TblColor = null;
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.SAVED_SHAPE")]
-	public partial class SAVED_SHAPE : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TblShape")]
+	public partial class TblShape : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -274,9 +285,9 @@ namespace DrawApp
 		
 		private System.Nullable<int> _Color_ID;
 		
-		private EntitySet<SAVED_DRAWING> _SAVED_DRAWINGs;
+		private EntitySet<TblDrawing> _TblDrawings;
 		
-		private EntityRef<SAVED_COLOR> _SAVED_COLOR;
+		private EntityRef<TblColor> _TblColor;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -294,10 +305,10 @@ namespace DrawApp
     partial void OnColor_IDChanged();
     #endregion
 		
-		public SAVED_SHAPE()
+		public TblShape()
 		{
-			this._SAVED_DRAWINGs = new EntitySet<SAVED_DRAWING>(new Action<SAVED_DRAWING>(this.attach_SAVED_DRAWINGs), new Action<SAVED_DRAWING>(this.detach_SAVED_DRAWINGs));
-			this._SAVED_COLOR = default(EntityRef<SAVED_COLOR>);
+			this._TblDrawings = new EntitySet<TblDrawing>(new Action<TblDrawing>(this.attach_TblDrawings), new Action<TblDrawing>(this.detach_TblDrawings));
+			this._TblColor = default(EntityRef<TblColor>);
 			OnCreated();
 		}
 		
@@ -392,7 +403,7 @@ namespace DrawApp
 			{
 				if ((this._Color_ID != value))
 				{
-					if (this._SAVED_COLOR.HasLoadedOrAssignedValue)
+					if (this._TblColor.HasLoadedOrAssignedValue)
 					{
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 					}
@@ -405,49 +416,49 @@ namespace DrawApp
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SAVED_SHAPE_SAVED_DRAWING", Storage="_SAVED_DRAWINGs", ThisKey="Shape_ID", OtherKey="Shape_ID")]
-		public EntitySet<SAVED_DRAWING> SAVED_DRAWINGs
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TblShape_TblDrawing", Storage="_TblDrawings", ThisKey="Shape_ID", OtherKey="Shape_ID")]
+		public EntitySet<TblDrawing> TblDrawings
 		{
 			get
 			{
-				return this._SAVED_DRAWINGs;
+				return this._TblDrawings;
 			}
 			set
 			{
-				this._SAVED_DRAWINGs.Assign(value);
+				this._TblDrawings.Assign(value);
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SAVED_COLOR_SAVED_SHAPE", Storage="_SAVED_COLOR", ThisKey="Color_ID", OtherKey="Color_ID", IsForeignKey=true, DeleteRule="CASCADE")]
-		public SAVED_COLOR SAVED_COLOR
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TblColor_TblShape", Storage="_TblColor", ThisKey="Color_ID", OtherKey="Color_ID", IsForeignKey=true, DeleteRule="CASCADE")]
+		public TblColor TblColor
 		{
 			get
 			{
-				return this._SAVED_COLOR.Entity;
+				return this._TblColor.Entity;
 			}
 			set
 			{
-				SAVED_COLOR previousValue = this._SAVED_COLOR.Entity;
+				TblColor previousValue = this._TblColor.Entity;
 				if (((previousValue != value) 
-							|| (this._SAVED_COLOR.HasLoadedOrAssignedValue == false)))
+							|| (this._TblColor.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if ((previousValue != null))
 					{
-						this._SAVED_COLOR.Entity = null;
-						previousValue.SAVED_SHAPEs.Remove(this);
+						this._TblColor.Entity = null;
+						previousValue.TblShapes.Remove(this);
 					}
-					this._SAVED_COLOR.Entity = value;
+					this._TblColor.Entity = value;
 					if ((value != null))
 					{
-						value.SAVED_SHAPEs.Add(this);
+						value.TblShapes.Add(this);
 						this._Color_ID = value.Color_ID;
 					}
 					else
 					{
 						this._Color_ID = default(Nullable<int>);
 					}
-					this.SendPropertyChanged("SAVED_COLOR");
+					this.SendPropertyChanged("TblColor");
 				}
 			}
 		}
@@ -472,21 +483,21 @@ namespace DrawApp
 			}
 		}
 		
-		private void attach_SAVED_DRAWINGs(SAVED_DRAWING entity)
+		private void attach_TblDrawings(TblDrawing entity)
 		{
 			this.SendPropertyChanging();
-			entity.SAVED_SHAPE = this;
+			entity.TblShape = this;
 		}
 		
-		private void detach_SAVED_DRAWINGs(SAVED_DRAWING entity)
+		private void detach_TblDrawings(TblDrawing entity)
 		{
 			this.SendPropertyChanging();
-			entity.SAVED_SHAPE = null;
+			entity.TblShape = null;
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.SAVED_DRAWING")]
-	public partial class SAVED_DRAWING : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TblDrawing")]
+	public partial class TblDrawing : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -499,7 +510,9 @@ namespace DrawApp
 		
 		private System.Nullable<double> _Y;
 		
-		private EntityRef<SAVED_SHAPE> _SAVED_SHAPE;
+		private EntityRef<TblShape> _TblShape;
+		
+		private EntityRef<TblOverview> _TblOverview;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -515,9 +528,10 @@ namespace DrawApp
     partial void OnYChanged();
     #endregion
 		
-		public SAVED_DRAWING()
+		public TblDrawing()
 		{
-			this._SAVED_SHAPE = default(EntityRef<SAVED_SHAPE>);
+			this._TblShape = default(EntityRef<TblShape>);
+			this._TblOverview = default(EntityRef<TblOverview>);
 			OnCreated();
 		}
 		
@@ -532,6 +546,10 @@ namespace DrawApp
 			{
 				if ((this._Drawing_ID != value))
 				{
+					if (this._TblOverview.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
 					this.OnDrawing_IDChanging(value);
 					this.SendPropertyChanging();
 					this._Drawing_ID = value;
@@ -552,7 +570,7 @@ namespace DrawApp
 			{
 				if ((this._Shape_ID != value))
 				{
-					if (this._SAVED_SHAPE.HasLoadedOrAssignedValue)
+					if (this._TblShape.HasLoadedOrAssignedValue)
 					{
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 					}
@@ -605,36 +623,260 @@ namespace DrawApp
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SAVED_SHAPE_SAVED_DRAWING", Storage="_SAVED_SHAPE", ThisKey="Shape_ID", OtherKey="Shape_ID", IsForeignKey=true, DeleteRule="CASCADE")]
-		public SAVED_SHAPE SAVED_SHAPE
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TblShape_TblDrawing", Storage="_TblShape", ThisKey="Shape_ID", OtherKey="Shape_ID", IsForeignKey=true, DeleteRule="CASCADE")]
+		public TblShape TblShape
 		{
 			get
 			{
-				return this._SAVED_SHAPE.Entity;
+				return this._TblShape.Entity;
 			}
 			set
 			{
-				SAVED_SHAPE previousValue = this._SAVED_SHAPE.Entity;
+				TblShape previousValue = this._TblShape.Entity;
 				if (((previousValue != value) 
-							|| (this._SAVED_SHAPE.HasLoadedOrAssignedValue == false)))
+							|| (this._TblShape.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if ((previousValue != null))
 					{
-						this._SAVED_SHAPE.Entity = null;
-						previousValue.SAVED_DRAWINGs.Remove(this);
+						this._TblShape.Entity = null;
+						previousValue.TblDrawings.Remove(this);
 					}
-					this._SAVED_SHAPE.Entity = value;
+					this._TblShape.Entity = value;
 					if ((value != null))
 					{
-						value.SAVED_DRAWINGs.Add(this);
+						value.TblDrawings.Add(this);
 						this._Shape_ID = value.Shape_ID;
 					}
 					else
 					{
 						this._Shape_ID = default(Nullable<int>);
 					}
-					this.SendPropertyChanged("SAVED_SHAPE");
+					this.SendPropertyChanged("TblShape");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TblOverview_TblDrawing", Storage="_TblOverview", ThisKey="Drawing_ID", OtherKey="Drawing_ID", IsForeignKey=true)]
+		public TblOverview TblOverview
+		{
+			get
+			{
+				return this._TblOverview.Entity;
+			}
+			set
+			{
+				TblOverview previousValue = this._TblOverview.Entity;
+				if (((previousValue != value) 
+							|| (this._TblOverview.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._TblOverview.Entity = null;
+						previousValue.TblDrawing = null;
+					}
+					this._TblOverview.Entity = value;
+					if ((value != null))
+					{
+						value.TblDrawing = this;
+						this._Drawing_ID = value.Drawing_ID;
+					}
+					else
+					{
+						this._Drawing_ID = default(int);
+					}
+					this.SendPropertyChanged("TblOverview");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TblOverview")]
+	public partial class TblOverview : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Drawing_ID;
+		
+		private string _Name;
+		
+		private System.Nullable<System.DateTime> _DateCreated;
+		
+		private System.Nullable<System.DateTime> _DateUpdated;
+		
+		private System.Nullable<int> _Shape_ID;
+		
+		private EntityRef<TblDrawing> _TblDrawing;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnDrawing_IDChanging(int value);
+    partial void OnDrawing_IDChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnDateCreatedChanging(System.Nullable<System.DateTime> value);
+    partial void OnDateCreatedChanged();
+    partial void OnDateUpdatedChanging(System.Nullable<System.DateTime> value);
+    partial void OnDateUpdatedChanged();
+    partial void OnShape_IDChanging(System.Nullable<int> value);
+    partial void OnShape_IDChanged();
+    #endregion
+		
+		public TblOverview()
+		{
+			this._TblDrawing = default(EntityRef<TblDrawing>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Drawing_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Drawing_ID
+		{
+			get
+			{
+				return this._Drawing_ID;
+			}
+			set
+			{
+				if ((this._Drawing_ID != value))
+				{
+					this.OnDrawing_IDChanging(value);
+					this.SendPropertyChanging();
+					this._Drawing_ID = value;
+					this.SendPropertyChanged("Drawing_ID");
+					this.OnDrawing_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="VarChar(50)")]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreated", DbType="DateTime")]
+		public System.Nullable<System.DateTime> DateCreated
+		{
+			get
+			{
+				return this._DateCreated;
+			}
+			set
+			{
+				if ((this._DateCreated != value))
+				{
+					this.OnDateCreatedChanging(value);
+					this.SendPropertyChanging();
+					this._DateCreated = value;
+					this.SendPropertyChanged("DateCreated");
+					this.OnDateCreatedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateUpdated", DbType="DateTime")]
+		public System.Nullable<System.DateTime> DateUpdated
+		{
+			get
+			{
+				return this._DateUpdated;
+			}
+			set
+			{
+				if ((this._DateUpdated != value))
+				{
+					this.OnDateUpdatedChanging(value);
+					this.SendPropertyChanging();
+					this._DateUpdated = value;
+					this.SendPropertyChanged("DateUpdated");
+					this.OnDateUpdatedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Shape_ID", DbType="Int")]
+		public System.Nullable<int> Shape_ID
+		{
+			get
+			{
+				return this._Shape_ID;
+			}
+			set
+			{
+				if ((this._Shape_ID != value))
+				{
+					this.OnShape_IDChanging(value);
+					this.SendPropertyChanging();
+					this._Shape_ID = value;
+					this.SendPropertyChanged("Shape_ID");
+					this.OnShape_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TblOverview_TblDrawing", Storage="_TblDrawing", ThisKey="Drawing_ID", OtherKey="Drawing_ID", IsUnique=true, IsForeignKey=false)]
+		public TblDrawing TblDrawing
+		{
+			get
+			{
+				return this._TblDrawing.Entity;
+			}
+			set
+			{
+				TblDrawing previousValue = this._TblDrawing.Entity;
+				if (((previousValue != value) 
+							|| (this._TblDrawing.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._TblDrawing.Entity = null;
+						previousValue.TblOverview = null;
+					}
+					this._TblDrawing.Entity = value;
+					if ((value != null))
+					{
+						value.TblOverview = this;
+					}
+					this.SendPropertyChanged("TblDrawing");
 				}
 			}
 		}

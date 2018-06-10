@@ -79,8 +79,8 @@ namespace DrawApp
             ColorManager = new ColorManager(Window);
             try
             {
-                var list = from s in ctx.SAVED_SHAPEs
-                           from c in ctx.SAVED_COLORs
+                var list = from s in ctx.TblShapes
+                           from c in ctx.TblColors
                            where s.Color_ID == c.Color_ID
                            select new SavedShape
                            {
