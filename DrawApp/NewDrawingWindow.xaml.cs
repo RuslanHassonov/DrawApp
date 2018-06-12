@@ -24,12 +24,13 @@ namespace DrawApp
     public partial class NewDrawingWindow : Window
     {
         MainWindow Window;
-        private CanvasManager canvasManager = new CanvasManager();
+        public CanvasManager canvasManager;
         public event EventHandler<NewCanvasEventArgs> OnCanvasCreated;
 
         public NewDrawingWindow(MainWindow w)
         {
             Window = w;
+            canvasManager = new CanvasManager(w);
             InitializeComponent();
         }
 
@@ -44,8 +45,8 @@ namespace DrawApp
             {
                 canvasManager.CreateNewCanvas(tb_Drawing_Name.Text);
                 CanvasWindow canvasWindow = new CanvasWindow(Window);
-                canvasWindow.Title = canvasManager.CanvasName;
-                OnCanvasCreation(new NewCanvasEventArgs(canvasManager.CanvasName, DateTime.Now));
+                canvasWindow.Title = canvasWindow.CanvasName;
+                OnCanvasCreation(new NewCanvasEventArgs(canvasWindow.CanvasName, DateTime.Now));
                 canvasWindow.Show();
                 this.Close();
             }

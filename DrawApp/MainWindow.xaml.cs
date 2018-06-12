@@ -25,7 +25,6 @@ namespace DrawApp
     {
         private SQLServer_DrawAppDataContext ctx = new SQLServer_DrawAppDataContext();
         private ShapeManager sm;
-        private NewDrawingWindow newDrawingWindow;
         private CanvasManager cm;
         private ColorManager clrm;
         private Shape shapeExample;
@@ -34,26 +33,15 @@ namespace DrawApp
         {
             InitializeComponent();
             sm = new ShapeManager(this);
-            cm = new CanvasManager();
+            cm = new CanvasManager(this);
             clrm = new ColorManager(this);
             cb_Shapes.ItemsSource = new ShapeManager(this).ListShapes;
             clrm.LoadColors();
             sm.LoadShapes();
-            LoadDrawings();
+            cm.LoadCanvasses();
         }
 
-        private void LoadDrawings()
-        {
-            var list = from o in ctx.TblOverviews
-                       select new
-                       {
-                           Name = o.Name,
-                           DateCreated = o.DateCreated,
-                           DateUpdated = o.DateUpdated
-                       };
-            dg_DrawingOverview.ItemsSource = list;
-        }
-        
+        //ComboBox Selection of Shapes
         private void cb_Shapes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cb_Shapes.SelectedIndex != -1)
@@ -151,25 +139,8 @@ namespace DrawApp
         {
             try
             {
-                string name = string.Empty;
-
-                if (cb_Shapes.SelectedItem.ToString() == "Ellipse" && tb_Height.Text == tb_Width.Text)
-                {
-                    name = "Circle";
-                }
-                else if (cb_Shapes.SelectedItem.ToString() == "Ellipse" && tb_Height.Text != tb_Width.Text)
-                {
-                    name = "Ellipse";
-                }
-                else if (cb_Shapes.SelectedItem.ToString() == "Rectangle" && tb_Height.Text == tb_Width.Text)
-                {
-                    name = "Square";
-                }
-                else if (cb_Shapes.SelectedItem.ToString() == "Rectangle" && tb_Height.Text != tb_Width.Text)
-                {
-                    name = "Rectangle";
-                }
-
+                string name = sm.SetShapeName(cb_Shapes.SelectedItem.ToString(), Int32.Parse(tb_Width.Text), Int32.Parse(tb_Height.Text));
+                
                 TblColor c = new TblColor()
                 {
                     Red = Byte.Parse(tb_RedValue.Text),
@@ -182,6 +153,7 @@ namespace DrawApp
                 {
                     ctx.TblColors.InsertOnSubmit(c);
                     ctx.SubmitChanges();
+                    clrm.LoadColors();
                 }
                 else
                 {
@@ -218,7 +190,7 @@ namespace DrawApp
         private void lb_ShapeTemplates_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             StackPanel selectedShape = lb_ShapeTemplates.SelectedItem as StackPanel;
-
+            cb_Shapes.SelectedIndex = -1;
             if (selectedShape != null)
             {
                 SavedShape savedShape = (SavedShape)selectedShape.Tag;
@@ -256,7 +228,7 @@ namespace DrawApp
 
         private void bt_NewDrawing_Click(object sender, RoutedEventArgs e)
         {
-            newDrawingWindow = new NewDrawingWindow(this);
+            NewDrawingWindow newDrawingWindow = new NewDrawingWindow(this);
             newDrawingWindow.OnCanvasCreated += OnCanvasCreatedHandler;
             newDrawingWindow.Show();
         }
@@ -271,17 +243,24 @@ namespace DrawApp
             };
             ctx.TblOverviews.InsertOnSubmit(newCanvas);
             ctx.SubmitChanges();
-            LoadDrawings();
+            cm.LoadCanvasses();
         }
 
         private void dg_DrawingOverview_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            TblOverview chosenItem = dg_DrawingOverview.SelectedItem as TblOverview;
-            if (chosenItem!=null)
+            TblOverview selection = dg_DrawingOverview.SelectedItem as TblOverview;
+
+            if (selection != null)
             {
-                CanvasWindow canvas = cm.ReopenCanvas(chosenItem);
-                canvas.Title = chosenItem.Name;
-                canvas.Show();
+                try
+                {
+                    CanvasWindow canvas = cm.ReopenCavas(selection.Name);
+                    canvas.Show();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error - " + ex);
+                }
             }
         }
     }

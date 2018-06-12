@@ -23,8 +23,11 @@ namespace DrawApp
     /// </summary>
     public partial class CanvasWindow : Window
     {
+        public string CanvasName { get; set; }
+
         MainWindow Window;
         ShapeManager shapeManager;
+        
         public CanvasWindow(MainWindow w)
         {
             InitializeComponent();
@@ -32,8 +35,9 @@ namespace DrawApp
             Window = w;
         }
 
-        public CanvasWindow(TblOverview overview)
+        public CanvasWindow(string name)
         {
+            CanvasName = name;
             InitializeComponent();
         }
 

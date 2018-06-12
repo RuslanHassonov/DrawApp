@@ -49,6 +49,28 @@ namespace DrawApp
             return NewShape;
         }
 
+        public string SetShapeName(string name, int w, int h)
+        {
+            string finalName = string.Empty;
+            if (name == "Ellipse" && h == w)
+            {
+                return finalName = "Circle";
+            }
+            else if (name == "Ellipse" && h != w)
+            {
+                return finalName = "Ellipse";
+            }
+            else if (name == "Rectangle" && h == w)
+            {
+                return finalName = "Square";
+            }
+            else if (name == "Rectangle" && h != w)
+            {
+                return finalName = "Rectangle";
+            }
+            return null;
+        }
+
         public Shape CreateNewEllipse(int w, int h, byte r, byte g, byte b)
         {
             NewShape = new Ellipse

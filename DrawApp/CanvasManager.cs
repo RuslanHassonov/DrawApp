@@ -20,19 +20,49 @@ namespace DrawApp
 {
     public class CanvasManager
     {
-        public string CanvasName { get; set; }
         public CanvasWindow CanvasWindow { get; set; }
+        public MainWindow MainWindow { get; set; }
 
-        public string CreateNewCanvas(string name)
+        public CanvasManager(MainWindow w)
         {
-            CanvasName = name;
-            return CanvasName;
+            MainWindow = w;
         }
 
-        public CanvasWindow ReopenCanvas(TblOverview overviewSelection)
+        public CanvasWindow CreateNewCanvas(string name)
         {
-            CanvasWindow = new CanvasWindow(overviewSelection);
+            CanvasWindow = new CanvasWindow(name);
             return CanvasWindow;
         }
+
+        public CanvasWindow ReopenCavas(string name)
+        {
+            CanvasWindow = new CanvasWindow(name);
+            CanvasWindow.Title = name;
+            return CanvasWindow;
+        }
+        
+        public void LoadCanvasses()
+        {
+            SQLServer_DrawAppDataContext ctx = new SQLServer_DrawAppDataContext();
+
+            var list = from o in ctx.TblOverviews
+                       select o;
+            MainWindow.dg_DrawingOverview.ItemsSource = list;
+
+
+            // -- Not Working as Intended, Review if possible --
+
+            //var list = (from o in ctx.TblOverviews
+            //           select new SelectedCanvas
+            //           {
+            //               Name = o.Name,
+            //               DateCreated = (DateTime)o.DateCreated,
+            //               DateUpdated = (DateTime)o.DateUpdated
+            //           }).ToList();
+            //MainWindow.dg_DrawingOverview.ItemsSource = list;
+
+            
+        }
+
     }
 }
