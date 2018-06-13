@@ -59,6 +59,7 @@
     <Compile Include="CanvasWindow.xaml.cs">
       <DependentUpon>CanvasWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ColorChangeEventArgs.cs" />
     <Compile Include="ColorManager.cs" />
     <Compile Include="NewCanvasEventArgs.cs" />
     <Compile Include="NewDrawingWindow.xaml.cs">
@@ -67,6 +68,7 @@
     <Compile Include="SavedColor.cs" />
     <Compile Include="SavedShape.cs" />
     <Compile Include="SelectedCanvas.cs" />
+    <Compile Include="ShapeChangedEventArgs.cs" />
     <Compile Include="ShapeManager.cs" />
     <Compile Include="SQLServer_DrawApp.designer.cs">
       <AutoGen>True</AutoGen>

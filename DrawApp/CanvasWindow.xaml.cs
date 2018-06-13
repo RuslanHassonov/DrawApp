@@ -23,44 +23,78 @@ namespace DrawApp
     /// </summary>
     public partial class CanvasWindow : Window
     {
-        public string CanvasName { get; set; }
-
         MainWindow Window;
         ShapeManager shapeManager;
-        
+        ColorManager colorManager;
+
+        public string CanvasName { get; set; }
+        public Color Color { get; set; }
+        public new int Width { get; set; }
+        public new int Height { get; set; }
+        public ShapeList ShapeName { get; set; }
+
         public CanvasWindow(MainWindow w)
         {
             InitializeComponent();
             shapeManager = new ShapeManager(w);
+            colorManager = new ColorManager(w);
             Window = w;
         }
 
         public CanvasWindow(string name)
         {
-            CanvasName = name;
             InitializeComponent();
+            CanvasName = name;
+        }
+
+        private void cvs_Drawing_Loaded(object sender, RoutedEventArgs e)
+        {
+            Window = new MainWindow();
+            Window.OnColorChanged += OnColorChangedHandler;
+            Window.OnShapeChanged += OnShapeChangedHandler;
+        }
+
+        private void OnColorChangedHandler(object sender, ColorChangeEventArgs e)
+        {
+            Color color = colorManager.AddColor(e.Red, e.Green, e.Blue);
+            Color = new Color();
+            Color = color;
+        }
+
+        private void OnShapeChangedHandler(object sender, ShapeChangedEventArgs e)
+        {
+            Width = e.Width;
+            Height = e.Height;
+            ShapeName = e.ShapeList;
         }
 
         public Shape Draw(ShapeList shapeName, int w, int h, byte r, byte g, byte b, MouseButtonEventArgs e)
         {
-            Shape shape = shapeManager.CreateNewShape(shapeName, w, h, r, g, b);
-            Point location = e.GetPosition(this.cvs_Drawing);
-            Canvas.SetTop(shape, location.Y);
-            Canvas.SetLeft(shape, location.X);
-
-            return shape;
+            try
+            {
+                Shape shape = shapeManager.CreateNewShape(shapeName, w, h, r, g, b);
+                Point location = e.GetPosition(this.cvs_Drawing);
+                Canvas.SetTop(shape, location.Y);
+                Canvas.SetLeft(shape, location.X);
+                return shape;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error - " + ex);
+                return null;
+            }
         }
 
-        private void Canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void cvs_Drawing_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             try
             {
-                int w = Int32.Parse(Window.tb_Width.Text);
-                int h = Int32.Parse(Window.tb_Height.Text);
-                byte r = Byte.Parse(Window.tb_RedValue.Text);
-                byte g = Byte.Parse(Window.tb_GreenValue.Text);
-                byte b = Byte.Parse(Window.tb_BlueValue.Text);
-                Shape shapeDrawing = Draw((Window.cb_Shapes.SelectedItem.ToString() == ShapeList.Ellipse.ToString() ? ShapeList.Ellipse : ShapeList.Rectangle), w, h, r, g, b, e);
+                int w = Width;
+                int h = Height;
+                byte r = Color.R;
+                byte g = Color.G;
+                byte b = Color.B;
+                Shape shapeDrawing = Draw(ShapeName, w, h, r, g, b, e);
                 cvs_Drawing.Children.Add(shapeDrawing);
             }
             catch (Exception)
@@ -68,6 +102,5 @@ namespace DrawApp
                 MessageBox.Show("Error occured - Please provide all necessary values before using this canvas.");
             }
         }
-        
     }
 }

@@ -23,24 +23,24 @@ namespace DrawApp
         public CanvasWindow CanvasWindow { get; set; }
         public MainWindow MainWindow { get; set; }
 
+
+        //CTOR
         public CanvasManager(MainWindow w)
         {
             MainWindow = w;
         }
 
-        public CanvasWindow CreateNewCanvas(string name)
-        {
-            CanvasWindow = new CanvasWindow(name);
-            return CanvasWindow;
-        }
 
-        public CanvasWindow ReopenCavas(string name)
+        //Add a brand new canvas
+        public CanvasWindow CreateNewCanvas(string name)
         {
             CanvasWindow = new CanvasWindow(name);
             CanvasWindow.Title = name;
             return CanvasWindow;
         }
         
+
+        //Load saved Canvasses to DataGrid
         public void LoadCanvasses()
         {
             SQLServer_DrawAppDataContext ctx = new SQLServer_DrawAppDataContext();

@@ -29,6 +29,10 @@ namespace DrawApp
         private ColorManager clrm;
         private Shape shapeExample;
 
+        public event EventHandler<ColorChangeEventArgs> OnColorChanged;
+        public event EventHandler<ShapeChangedEventArgs> OnShapeChanged;
+
+
         public MainWindow()
         {
             InitializeComponent();
@@ -39,6 +43,15 @@ namespace DrawApp
             clrm.LoadColors();
             sm.LoadShapes();
             cm.LoadCanvasses();
+        }
+
+        private void OnColorChangedHappened (ColorChangeEventArgs args)
+        {
+            OnColorChanged?.Invoke(this, args);
+        }
+        private void OnShapeChangedHappened (ShapeChangedEventArgs args)
+        {
+            OnShapeChanged?.Invoke(this, args);
         }
 
         //ComboBox Selection of Shapes
@@ -128,6 +141,7 @@ namespace DrawApp
                 tb_RedValue.Text = ((SolidColorBrush)selected.Fill).Color.R.ToString();
                 tb_GreenValue.Text = ((SolidColorBrush)selected.Fill).Color.G.ToString();
                 tb_BlueValue.Text = ((SolidColorBrush)selected.Fill).Color.B.ToString();
+                OnColorChangedHappened(new ColorChangeEventArgs(Byte.Parse(tb_RedValue.Text), Byte.Parse(tb_GreenValue.Text), Byte.Parse(tb_BlueValue.Text)));
             }
         }
 
@@ -208,6 +222,7 @@ namespace DrawApp
                 {
                     cb_Shapes.SelectedIndex = 1;
                 }
+                OnShapeChangedHappened(new ShapeChangedEventArgs((cb_Shapes.SelectedItem.ToString() == ShapeList.Ellipse.ToString() ? ShapeList.Ellipse : ShapeList.Rectangle), savedShape.W, savedShape.H));
             }
         }
 
@@ -254,7 +269,7 @@ namespace DrawApp
             {
                 try
                 {
-                    CanvasWindow canvas = cm.ReopenCavas(selection.Name);
+                    CanvasWindow canvas = cm.CreateNewCanvas(selection.Name);
                     canvas.Show();
                 }
                 catch (Exception ex)
