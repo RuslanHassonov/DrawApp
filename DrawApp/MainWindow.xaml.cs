@@ -90,9 +90,8 @@ namespace DrawApp
             }
 
         }
-
         
-        #region Color Saving and Selecting with DB
+        #region Color Saving and Selecting from DB
 
         private void bt_SaveColour_Click(object sender, RoutedEventArgs e)
         {
@@ -147,7 +146,7 @@ namespace DrawApp
 
         #endregion
 
-        #region Shape Saving and Selecting with DB
+        #region Shape Saving and Selecting from DB
 
         private void bt_SaveShape_Click(object sender, RoutedEventArgs e)
         {

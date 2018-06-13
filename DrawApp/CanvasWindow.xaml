@@ -6,7 +6,7 @@
         mc:Ignorable="d"
         Height="450" Width="800">
     <Grid>
-        <Canvas x:Name="cvs_Drawing" HorizontalAlignment="Left" Height="419" VerticalAlignment="Top" Width="792" MouseLeftButtonDown="cvs_Drawing_MouseLeftButtonDown" Loaded="cvs_Drawing_Loaded"/>
+        <Canvas x:Name="cvs_Drawing" HorizontalAlignment="Left" Height="399" VerticalAlignment="Top" Width="772" MouseLeftButtonDown="cvs_Drawing_MouseLeftButtonDown" Loaded="cvs_Drawing_Loaded" Background="#FFBFBFBF" Margin="10,10,0,0"/>
 
     </Grid>
 </Window>

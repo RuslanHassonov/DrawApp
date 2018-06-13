@@ -23,13 +23,11 @@ namespace DrawApp
         public CanvasWindow CanvasWindow { get; set; }
         public MainWindow MainWindow { get; set; }
 
-
         //CTOR
         public CanvasManager(MainWindow w)
         {
             MainWindow = w;
         }
-
 
         //Add a brand new canvas
         public CanvasWindow CreateNewCanvas(string name)
@@ -38,7 +36,6 @@ namespace DrawApp
             CanvasWindow.Title = name;
             return CanvasWindow;
         }
-        
 
         //Load saved Canvasses to DataGrid
         public void LoadCanvasses()
