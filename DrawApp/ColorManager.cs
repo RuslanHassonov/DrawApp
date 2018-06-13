@@ -19,11 +19,17 @@ namespace DrawApp
     {
         public MainWindow Window { get; set; }
 
+
+        //Constructors
         public ColorManager(MainWindow w)
         {
             Window = w;
         }
-        
+
+        public ColorManager(){}
+
+
+        //Add new color method
         public Color AddColor(byte r, byte g, byte b)
         {
             Color c = new Color
@@ -36,6 +42,7 @@ namespace DrawApp
             return c;
         }
 
+        //Load colors from Databse method
         public void LoadColors()
         {
             SQLServer_DrawAppDataContext ctx = new SQLServer_DrawAppDataContext();

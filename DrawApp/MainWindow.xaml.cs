@@ -29,7 +29,6 @@ namespace DrawApp
         private ColorManager clrm;
         private Shape shapeExample;
 
-        public event EventHandler<ColorChangeEventArgs> OnColorChanged;
         public event EventHandler<ShapeChangedEventArgs> OnShapeChanged;
 
 
@@ -45,11 +44,7 @@ namespace DrawApp
             cm.LoadCanvasses();
         }
 
-        private void OnColorChangedHappened (ColorChangeEventArgs args)
-        {
-            OnColorChanged?.Invoke(this, args);
-        }
-        private void OnShapeChangedHappened (ShapeChangedEventArgs args)
+        private void OnShapeChangedHappened(ShapeChangedEventArgs args)
         {
             OnShapeChanged?.Invoke(this, args);
         }
@@ -66,10 +61,12 @@ namespace DrawApp
                     byte r = Byte.Parse(tb_RedValue.Text);
                     byte g = Byte.Parse(tb_GreenValue.Text);
                     byte b = Byte.Parse(tb_BlueValue.Text);
+                    ShapeList name = (cb_Shapes.SelectedItem.ToString() == ShapeList.Ellipse.ToString() ? ShapeList.Ellipse : ShapeList.Rectangle);
                     cvs_Example.Children.Clear();
-                    shapeExample = sm.CreateNewShape((cb_Shapes.SelectedItem.ToString() == ShapeList.Ellipse.ToString() ? ShapeList.Ellipse : ShapeList.Rectangle), ((int)cvs_Example.Width < w ? (int)cvs_Example.Width : w), ((int)cvs_Example.Height < h ? (int)cvs_Example.Height : h), r, g, b);
+                    shapeExample = sm.CreateNewShape(name, ((int)cvs_Example.Width < w ? (int)cvs_Example.Width : w), ((int)cvs_Example.Height < h ? (int)cvs_Example.Height : h), r, g, b);
                     Canvas.SetTop(shapeExample, 0);
                     Canvas.SetLeft(shapeExample, 0);
+                    OnShapeChangedHappened(new ShapeChangedEventArgs(name, w, h, r, g, b));
                     cvs_Example.Children.Add(shapeExample);
                 }
                 catch (FormatException)
@@ -90,7 +87,7 @@ namespace DrawApp
             }
 
         }
-        
+
         #region Color Saving and Selecting from DB
 
         private void bt_SaveColour_Click(object sender, RoutedEventArgs e)
@@ -140,7 +137,6 @@ namespace DrawApp
                 tb_RedValue.Text = ((SolidColorBrush)selected.Fill).Color.R.ToString();
                 tb_GreenValue.Text = ((SolidColorBrush)selected.Fill).Color.G.ToString();
                 tb_BlueValue.Text = ((SolidColorBrush)selected.Fill).Color.B.ToString();
-                OnColorChangedHappened(new ColorChangeEventArgs(Byte.Parse(tb_RedValue.Text), Byte.Parse(tb_GreenValue.Text), Byte.Parse(tb_BlueValue.Text)));
             }
         }
 
@@ -153,7 +149,7 @@ namespace DrawApp
             try
             {
                 string name = sm.SetShapeName(cb_Shapes.SelectedItem.ToString(), Int32.Parse(tb_Width.Text), Int32.Parse(tb_Height.Text));
-                
+
                 TblColor c = new TblColor()
                 {
                     Red = Byte.Parse(tb_RedValue.Text),
@@ -221,12 +217,11 @@ namespace DrawApp
                 {
                     cb_Shapes.SelectedIndex = 1;
                 }
-                OnShapeChangedHappened(new ShapeChangedEventArgs((cb_Shapes.SelectedItem.ToString() == ShapeList.Ellipse.ToString() ? ShapeList.Ellipse : ShapeList.Rectangle), savedShape.W, savedShape.H));
             }
         }
 
         #endregion
-        
+
         private void bt_ClearAll_Click(object sender, RoutedEventArgs e)
         {
             tb_Width.Clear();
@@ -247,19 +242,6 @@ namespace DrawApp
             newDrawingWindow.Show();
         }
 
-        private void OnCanvasCreatedHandler(object sender, NewCanvasEventArgs e)
-        {
-            TblOverview newCanvas = new TblOverview
-            {
-                Name = e.CanvasName,
-                DateCreated = e.CreationDate,
-                DateUpdated = e.CreationDate
-            };
-            ctx.TblOverviews.InsertOnSubmit(newCanvas);
-            ctx.SubmitChanges();
-            cm.LoadCanvasses();
-        }
-
         private void dg_DrawingOverview_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             TblOverview selection = dg_DrawingOverview.SelectedItem as TblOverview;
@@ -277,6 +259,30 @@ namespace DrawApp
                 }
             }
         }
+
+        private void OnCanvasCreatedHandler(object sender, NewCanvasEventArgs e)
+        {
+            TblOverview newCanvas = new TblOverview
+            {
+                Name = e.CanvasName,
+                DateCreated = e.CreationDate,
+                DateUpdated = e.CreationDate
+            };
+            ctx.TblOverviews.InsertOnSubmit(newCanvas);
+            ctx.SubmitChanges();
+            cm.LoadCanvasses();
+        }
+
+        private void bt_DeleteDrawing_Click(object sender, RoutedEventArgs e)
+        {
+            TblOverview selected = dg_DrawingOverview.SelectedItem as TblOverview;
+            cm.DeleteCanvas(selected.Name);
+        }
     }
-        
+
 }
+
+
+//Select shape first, open canvas second is impossible => event handling needs to be improved.
+//After creating a new canvas, drawing is impossible. Have to subscribe new canvasses to event.
+//Implement saving of drawing. Possible Solution => Saved part by part, color => shape => drawing.

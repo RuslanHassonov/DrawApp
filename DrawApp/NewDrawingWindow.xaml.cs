@@ -44,7 +44,7 @@ namespace DrawApp
             if (tb_Drawing_Name.Text != string.Empty)
             {
                 canvasManager.CreateNewCanvas(tb_Drawing_Name.Text);
-                CanvasWindow canvasWindow = new CanvasWindow(Window);
+                CanvasWindow canvasWindow = new CanvasWindow(tb_Drawing_Name.Text);
                 canvasWindow.Title = canvasWindow.CanvasName;
                 OnCanvasCreation(new NewCanvasEventArgs(canvasWindow.CanvasName, DateTime.Now));
                 canvasWindow.Show();

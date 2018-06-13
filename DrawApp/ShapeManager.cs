@@ -30,6 +30,9 @@ namespace DrawApp
             ListShapes.Add("Ellipse");
             ListShapes.Add("Rectangle");
         }
+
+        public ShapeManager(){}
+
         #region Shape Creation
 
         public Shape CreateNewShape(ShapeList shapeList, int w, int h, byte r, byte g, byte b)
