@@ -153,11 +153,11 @@ namespace DrawApp
             }
         }
 
-        //Write a shape to DB
-
+        //Write a new shape to DB
         public void WriteShapeToDB(string name, byte r, byte g, byte b, int w, int h)
         {
             SQLServer_DrawAppDataContext ctx = new SQLServer_DrawAppDataContext();
+
             TblColor c = new TblColor()
             {
                 Red = r,
@@ -193,7 +193,7 @@ namespace DrawApp
             }
             else
             {
-                MessageBox.Show("Shape already exists.");
+                MessageBox.Show("This shape already exists");
             }
         }
     }

@@ -71,13 +71,60 @@ namespace DrawApp
                 Shape shapeDrawing = GetShape(ShapeName, w, h, r, g, b, e);
                 cvs_Drawing.Children.Add(shapeDrawing);
 
-                TblPosition position = new TblPosition
-                {
-                    X = Canvas.GetLeft(shapeDrawing),
-                    Y = Canvas.GetTop(shapeDrawing),
+                SQLServer_DrawAppDataContext ctx = new SQLServer_DrawAppDataContext();
 
+                TblColor c = new TblColor()
+                {
+                    Red = r,
+                    Green = g,
+                    Blue = b
                 };
 
+                TblColor savedColor = ctx.TblColors.Where(sc => sc.Red == c.Red && sc.Blue == c.Blue && sc.Green == c.Green).FirstOrDefault();
+                if (savedColor == null)
+                {
+                    ctx.TblColors.InsertOnSubmit(c);
+                    ctx.SubmitChanges();
+                }
+                else
+                {
+                    c.Color_ID = savedColor.Color_ID;
+                }
+
+                TblShape s = new TblShape()
+                {
+                    Width = w,
+                    Height = h,
+                    Shape = ShapeName.ToString(),
+                    Color_ID = c.Color_ID
+                };
+
+                TblShape savedShape = ctx.TblShapes.Where(ss => ss.Color_ID == s.Color_ID && ss.Width == s.Width && ss.Height == s.Height && ss.Shape == s.Shape).FirstOrDefault();
+                if (savedShape == null)
+                {
+                    ctx.TblShapes.InsertOnSubmit(s);
+                    ctx.SubmitChanges();
+                }
+                else
+                {
+                    s.Shape_ID = savedShape.Shape_ID;
+                }
+
+                var canvasID = ctx.TblOverviews.Where(canvas => canvas.Name == this.Title).FirstOrDefault();
+                if (canvasID != null)
+                {
+                    TblPosition position = new TblPosition()
+                    {
+                        Shape_ID = s.Shape_ID,
+                        Drawing_ID = canvasID.Drawing_ID,
+                        X = Canvas.GetLeft(shapeDrawing),
+                        Y = Canvas.GetTop(shapeDrawing)
+                    };
+
+                    ctx.TblPositions.InsertOnSubmit(position);
+                }
+
+                ctx.SubmitChanges();
             }
             catch (Exception)
             {

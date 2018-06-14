@@ -218,6 +218,7 @@ namespace DrawApp
                 {
                     CanvasWindow canvas = cm.CreateNewCanvas(selection.Name);
                     canvas.Show();
+                    
                 }
                 catch (Exception ex)
                 {
