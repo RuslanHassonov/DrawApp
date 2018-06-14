@@ -31,7 +31,6 @@ namespace DrawApp
 
         public event EventHandler<ShapeChangedEventArgs> OnShapeChanged;
 
-
         public MainWindow()
         {
             InitializeComponent();
@@ -94,23 +93,10 @@ namespace DrawApp
         {
             try
             {
-                TblColor c = new TblColor()
-                {
-                    Red = Byte.Parse(tb_RedValue.Text),
-                    Green = Byte.Parse(tb_GreenValue.Text),
-                    Blue = Byte.Parse(tb_BlueValue.Text)
-                };
-
-                TblColor savedColor = ctx.TblColors.Where(sc => sc.Red == c.Red && sc.Blue == c.Blue && sc.Green == c.Green).FirstOrDefault();
-                if (savedColor == null)
-                {
-                    ctx.TblColors.InsertOnSubmit(c);
-                    ctx.SubmitChanges();
-                }
-                else
-                {
-                    MessageBox.Show("This color already exists.");
-                }
+                byte r = Byte.Parse(tb_RedValue.Text);
+                byte g = Byte.Parse(tb_GreenValue.Text);
+                byte b = Byte.Parse(tb_BlueValue.Text);
+                clrm.WriteColorToDB(r, g, b);
                 lb_ColourTemplates.Items.Clear();
                 clrm.LoadColors();
             }
@@ -148,39 +134,19 @@ namespace DrawApp
         {
             try
             {
-                string name = sm.SetShapeName(cb_Shapes.SelectedItem.ToString(), Int32.Parse(tb_Width.Text), Int32.Parse(tb_Height.Text));
-
-                TblColor c = new TblColor()
-                {
-                    Red = Byte.Parse(tb_RedValue.Text),
-                    Green = Byte.Parse(tb_GreenValue.Text),
-                    Blue = Byte.Parse(tb_BlueValue.Text)
-                };
-
-                TblColor savedColor = ctx.TblColors.Where(sc => sc.Red == c.Red && sc.Blue == c.Blue && sc.Green == c.Green).FirstOrDefault();
-                if (savedColor == null)
-                {
-                    ctx.TblColors.InsertOnSubmit(c);
-                    ctx.SubmitChanges();
-                    clrm.LoadColors();
-                }
-                else
-                {
-                    c.Color_ID = savedColor.Color_ID;
-                }
-
-                TblShape s = new TblShape()
-                {
-                    Width = Int32.Parse(tb_Width.Text),
-                    Height = Int32.Parse(tb_Height.Text),
-                    Shape = name,
-                    Color_ID = c.Color_ID
-                };
-
-                ctx.TblShapes.InsertOnSubmit(s);
-                ctx.SubmitChanges();
+                byte r = Byte.Parse(tb_RedValue.Text);
+                byte g = Byte.Parse(tb_GreenValue.Text);
+                byte b = Byte.Parse(tb_BlueValue.Text);
+                int w = Int32.Parse(tb_Width.Text);
+                int h = Int32.Parse(tb_Height.Text);
+                string name = sm.SetShapeName(cb_Shapes.SelectedItem.ToString(), w, h);
+                sm.WriteShapeToDB(name, r, g, b, w, h);
                 lb_ShapeTemplates.Items.Clear();
+                lb_ColourTemplates.Items.Clear();
+                clrm.LoadColors();
                 sm.LoadShapes();
+
+
             }
             catch (FormatException)
             {

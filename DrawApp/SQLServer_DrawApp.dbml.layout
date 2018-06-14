@@ -2,49 +2,49 @@
 <ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11.25, 8.5" name="SQLServer_DrawApp">
   <DataContextMoniker Name="/SQLServer_DrawAppDataContext" />
   <nestedChildShapes>
-    <classShape Id="90a589b9-c2a3-4243-a5f2-e1f918b3d9d5" absoluteBounds="2.5, 0.5, 2, 1.5785953776041664">
+    <classShape Id="d479ad73-6541-4f6b-8ab8-939a7331766b" absoluteBounds="0.75, 1, 2, 1.5785953776041664">
       <DataClassMoniker Name="/SQLServer_DrawAppDataContext/TblColor" />
       <nestedChildShapes>
-        <elementListCompartment Id="731b24aa-dd26-4ed8-81f7-280a6af4e50a" absoluteBounds="2.515, 0.96, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="1a5bb2e8-b983-4fc6-bc20-90e27e293aa1" absoluteBounds="0.765, 1.46, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="9d1d4bb6-6a6e-480b-8cbf-da40c09ada12" absoluteBounds="2.75, 3, 2, 1.7708968098958329">
+    <classShape Id="f598fad1-f735-46aa-85d6-19f21be1a678" absoluteBounds="3.5, 0.875, 2, 1.7708968098958329">
       <DataClassMoniker Name="/SQLServer_DrawAppDataContext/TblShape" />
       <nestedChildShapes>
-        <elementListCompartment Id="c44cffb1-8dca-491b-bef6-3b0b237bf15c" absoluteBounds="2.765, 3.46, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="35917e55-aa0d-4602-a7d9-0b79cfa40b15" absoluteBounds="3.515, 1.335, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="2035eba5-33db-47a0-8999-a72ad08265ef" absoluteBounds="6, 3.125, 2, 1.5785953776041666">
-      <DataClassMoniker Name="/SQLServer_DrawAppDataContext/TblDrawing" />
-      <nestedChildShapes>
-        <elementListCompartment Id="4dd85671-33f5-4f39-8615-cde5c60ba8bb" absoluteBounds="6.015, 3.585, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <associationConnector edgePoints="[(3.625 : 2.07859537760417); (3.625 : 3)]" fixedFrom="NotFixed" fixedTo="NotFixed">
-      <AssociationMoniker Name="/SQLServer_DrawAppDataContext/TblColor/TblColor_TblShape" />
-      <nodes>
-        <classShapeMoniker Id="90a589b9-c2a3-4243-a5f2-e1f918b3d9d5" />
-        <classShapeMoniker Id="9d1d4bb6-6a6e-480b-8cbf-da40c09ada12" />
-      </nodes>
-    </associationConnector>
-    <associationConnector edgePoints="[(4.75 : 3.91429768880208); (6 : 3.91429768880208)]" fixedFrom="NotFixed" fixedTo="NotFixed">
-      <AssociationMoniker Name="/SQLServer_DrawAppDataContext/TblShape/TblShape_TblDrawing" />
-      <nodes>
-        <classShapeMoniker Id="9d1d4bb6-6a6e-480b-8cbf-da40c09ada12" />
-        <classShapeMoniker Id="2035eba5-33db-47a0-8999-a72ad08265ef" />
-      </nodes>
-    </associationConnector>
-    <classShape Id="5df0e36d-ac8c-4bed-84b7-8efd6d5911fc" absoluteBounds="9, 3.125, 2, 1.7708968098958331">
+    <classShape Id="4df0c460-e2ca-4c16-8025-e3eb91a019db" absoluteBounds="9, 0.875, 2, 1.7708968098958329">
       <DataClassMoniker Name="/SQLServer_DrawAppDataContext/TblOverview" />
       <nestedChildShapes>
-        <elementListCompartment Id="48125c41-69eb-4dde-9f04-5dc606e8f21a" absoluteBounds="9.015, 3.585, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="63bc40d0-00d3-4714-a473-1a1839e346ba" absoluteBounds="9.015, 1.335, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(9 : 3.91429768880208); (8 : 3.91429768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/SQLServer_DrawAppDataContext/TblOverview/TblOverview_TblDrawing" />
+    <classShape Id="be639edf-d00f-4727-b38d-41ee5bb09eb0" absoluteBounds="6.25, 0.875, 2, 1.7708968098958329">
+      <DataClassMoniker Name="/SQLServer_DrawAppDataContext/TblPosition" />
+      <nestedChildShapes>
+        <elementListCompartment Id="f4380a80-3980-42e4-a5df-274bfe71f4a2" absoluteBounds="6.265, 1.335, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(2.75 : 1.78929768880208); (3.5 : 1.78929768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SQLServer_DrawAppDataContext/TblColor/TblColor_TblShape" />
       <nodes>
-        <classShapeMoniker Id="5df0e36d-ac8c-4bed-84b7-8efd6d5911fc" />
-        <classShapeMoniker Id="2035eba5-33db-47a0-8999-a72ad08265ef" />
+        <classShapeMoniker Id="d479ad73-6541-4f6b-8ab8-939a7331766b" />
+        <classShapeMoniker Id="f598fad1-f735-46aa-85d6-19f21be1a678" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(8.25 : 1.76044840494792); (9 : 1.76044840494792)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SQLServer_DrawAppDataContext/TblPosition/TblPosition_TblOverview" />
+      <nodes>
+        <classShapeMoniker Id="be639edf-d00f-4727-b38d-41ee5bb09eb0" />
+        <classShapeMoniker Id="4df0c460-e2ca-4c16-8025-e3eb91a019db" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.5 : 1.76044840494792); (6.25 : 1.76044840494792)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SQLServer_DrawAppDataContext/TblShape/TblShape_TblPosition" />
+      <nodes>
+        <classShapeMoniker Id="f598fad1-f735-46aa-85d6-19f21be1a678" />
+        <classShapeMoniker Id="be639edf-d00f-4727-b38d-41ee5bb09eb0" />
       </nodes>
     </associationConnector>
   </nestedChildShapes>

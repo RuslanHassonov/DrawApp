@@ -73,5 +73,29 @@ namespace DrawApp
             }
 
         }
+
+        //Method to write color to database
+        public void WriteColorToDB(byte r, byte g, byte b)
+        {
+            SQLServer_DrawAppDataContext ctx = new SQLServer_DrawAppDataContext();
+
+            TblColor c = new TblColor()
+            {
+                Red = r,
+                Green = g,
+                Blue = b
+            };
+
+            TblColor savedColor = ctx.TblColors.Where(sc => sc.Red == c.Red && sc.Blue == c.Blue && sc.Green == c.Green).FirstOrDefault();
+            if (savedColor == null)
+            {
+                ctx.TblColors.InsertOnSubmit(c);
+                ctx.SubmitChanges();
+            }
+            else
+            {
+                MessageBox.Show("This color already exists.");
+            }
+        }
     }
 }

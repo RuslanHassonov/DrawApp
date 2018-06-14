@@ -16,18 +16,8 @@
       <Column Name="Width" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Height" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Color_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Association Name="TblShape_TblDrawing" Member="TblDrawings" ThisKey="Shape_ID" OtherKey="Shape_ID" Type="TblDrawing" />
+      <Association Name="TblShape_TblPosition" Member="TblPositions" ThisKey="Shape_ID" OtherKey="Shape_ID" Type="TblPosition" />
       <Association Name="TblColor_TblShape" Member="TblColor" ThisKey="Color_ID" OtherKey="Color_ID" Type="TblColor" IsForeignKey="true" DeleteRule="CASCADE" />
-    </Type>
-  </Table>
-  <Table Name="dbo.TblDrawing" Member="TblDrawings">
-    <Type Name="TblDrawing">
-      <Column Name="Drawing_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Shape_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="X" Type="System.Double" DbType="Float" CanBeNull="true" />
-      <Column Name="Y" Type="System.Double" DbType="Float" CanBeNull="true" />
-      <Association Name="TblShape_TblDrawing" Member="TblShape" ThisKey="Shape_ID" OtherKey="Shape_ID" Type="TblShape" IsForeignKey="true" DeleteRule="CASCADE" />
-      <Association Name="TblOverview_TblDrawing" Member="TblOverview" ThisKey="Drawing_ID" OtherKey="Drawing_ID" Type="TblOverview" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.TblOverview" Member="TblOverviews">
@@ -36,8 +26,19 @@
       <Column Name="Name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="DateUpdated" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Position_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="TblPosition_TblOverview" Member="TblPosition" ThisKey="Position_ID" OtherKey="Position_ID" Type="TblPosition" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TblPosition" Member="TblPositions">
+    <Type Name="TblPosition">
+      <Column Name="Position_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Drawing_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Shape_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Association Name="TblOverview_TblDrawing" Member="TblDrawing" ThisKey="Drawing_ID" OtherKey="Drawing_ID" Type="TblDrawing" Cardinality="One" />
+      <Column Name="X" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Y" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Association Name="TblPosition_TblOverview" Member="TblOverviews" ThisKey="Position_ID" OtherKey="Position_ID" Type="TblOverview" />
+      <Association Name="TblShape_TblPosition" Member="TblShape" ThisKey="Shape_ID" OtherKey="Shape_ID" Type="TblShape" IsForeignKey="true" DeleteRule="CASCADE" />
     </Type>
   </Table>
 </Database>

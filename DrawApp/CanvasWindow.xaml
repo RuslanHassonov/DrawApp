@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Height="450" Width="800" Closing="CanvasWindow1_Closing">
+        Height="450" Width="800">
     <Grid>
         <Canvas x:Name="cvs_Drawing" HorizontalAlignment="Left" Height="399" VerticalAlignment="Top" Width="772" MouseLeftButtonDown="cvs_Drawing_MouseLeftButtonDown" Background="#FFBFBFBF" Margin="10,10,0,0"/>
 

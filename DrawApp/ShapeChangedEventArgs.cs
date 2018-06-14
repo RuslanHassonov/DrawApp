@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DrawApp
+﻿namespace DrawApp
 {
     public class ShapeChangedEventArgs
     {
+        //private ShapeList ShapeList;
+        //private int Width;
+        //private int Height;
+        //private byte Red;
+        //private byte Green;
+        //private byte Blue;
         public ShapeList ShapeList { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
@@ -15,9 +15,9 @@ namespace DrawApp
         public byte Green { get; set; }
         public byte Blue { get; set; }
 
-        public ShapeChangedEventArgs(ShapeList shape, int w, int h, byte r, byte g, byte b)
+        public ShapeChangedEventArgs(ShapeList name, int w, int h, byte r, byte g, byte b)
         {
-            ShapeList = shape;
+            ShapeList = name;
             Width = w;
             Height = h;
             Red = r;

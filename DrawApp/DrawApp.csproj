@@ -59,7 +59,6 @@
     <Compile Include="CanvasWindow.xaml.cs">
       <DependentUpon>CanvasWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ColorChangeEventArgs.cs" />
     <Compile Include="ColorManager.cs" />
     <Compile Include="NewCanvasEventArgs.cs" />
     <Compile Include="NewDrawingWindow.xaml.cs">
