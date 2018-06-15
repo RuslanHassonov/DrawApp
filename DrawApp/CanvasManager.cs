@@ -22,13 +22,11 @@ namespace DrawApp
     {
         public CanvasWindow CanvasWindow { get; set; }
         public MainWindow MainWindow { get; set; }
-        public List<CanvasWindow> ListOfActiveCanvas { get; set; }
 
         //Constructors
         public CanvasManager(MainWindow w)
         {
             MainWindow = w;
-            ListOfActiveCanvas = new List<CanvasWindow>();
             MainWindow.OnShapeChanged += OnShapeChangedHandler;
         }
 
@@ -38,8 +36,6 @@ namespace DrawApp
         public CanvasWindow CreateNewCanvas(string name)
         {
             CanvasWindow = new CanvasWindow(name);
-            ListOfActiveCanvas.Add(CanvasWindow);
-
             return CanvasWindow;
         }
 
@@ -68,15 +64,7 @@ namespace DrawApp
         //Event Handlers
         private void OnShapeChangedHandler(object sender, ShapeChangedEventArgs e)
         {
-            foreach (var item in ListOfActiveCanvas)
-            {
-                item.Width = e.Width;
-                item.Height = e.Height;
-                item.Red = e.Red;
-                item.Green = e.Green;
-                item.Blue = e.Blue;
-                item.ShapeName = e.ShapeList;
-            }
+
         }
 
 

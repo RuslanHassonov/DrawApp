@@ -35,26 +35,35 @@ namespace DrawApp
 
         #region Shape Creation
 
-        public Shape CreateNewShape(ShapeList shapeList, int w, int h, Color color)
+        public Shape CreateNewShape()
         {
-            Color newShapeColor = ColorManager.CreateNewColor(color.R, color.G, color.B);
+            ColorManager = new ColorManager(Window);
+            Color newShapeColor = ColorManager.CreateNewColor();
 
-            switch (shapeList)
+            if (Window.cb_Shapes.SelectedItem.ToString() == "Ellipse")
             {
-                case ShapeList.Ellipse:
-                    NewShape = CreateNewEllipse(w, h, newShapeColor);
-                    break;
-                case ShapeList.Rectangle:
-                    NewShape = CreateNewRectangle(w, h, newShapeColor);
-                    break;
-                default:
-                    break;
+                NewShape = new Ellipse
+                {
+                    Width = Int32.Parse(Window.tb_Width.Text),
+                    Height = Int32.Parse(Window.tb_Height.Text),
+                    Fill = new SolidColorBrush(newShapeColor)
+                };
+                return NewShape;
             }
-
-            return NewShape;
+            else
+            {
+                NewShape = new Rectangle
+                {
+                    Width = Int32.Parse(Window.tb_Width.Text),
+                    Height = Int32.Parse(Window.tb_Height.Text),
+                    Fill = new SolidColorBrush(newShapeColor)
+                };
+                return NewShape;
+            }
+            
         }
 
-        public string SetFinalShapeName(string name, int w, int h)
+        public string SetFinalShapeName(string name, double w, double h)
         {
             string finalName = string.Empty;
             if (name == "Ellipse" && h == w)
@@ -74,28 +83,6 @@ namespace DrawApp
                 return finalName = "Rectangle";
             }
             return null;
-        }
-
-        public Shape CreateNewEllipse(int w, int h, Color color)
-        {
-            NewShape = new Ellipse
-            {
-                Width = w,
-                Height = h,
-                Fill = new SolidColorBrush(color)
-            };
-            return NewShape;
-        }
-
-        public Shape CreateNewRectangle(int w, int h, Color color)
-        {
-            NewShape = new Rectangle
-            {
-                Width = w,
-                Height = h,
-                Fill = new SolidColorBrush(color)
-            };
-            return NewShape;
         }
 
         #endregion
@@ -133,7 +120,7 @@ namespace DrawApp
                         Width = 40,
                         Height = 30
                     };
-                    Color color = ColorManager.CreateNewColor(item.R, item.G, item.B);
+                    Color color = ColorManager.RecreateAColor(item.R, item.G, item.B);
                     colorLabel.Background = new SolidColorBrush(color);
 
                     Label descriptionLabel = new Label

@@ -24,11 +24,6 @@ namespace DrawApp
     public partial class CanvasWindow : Window
     {
         public string CanvasName { get; set; }
-        public new int Width { get; set; }
-        public new int Height { get; set; }
-        public byte Red { get; set; }
-        public byte Green { get; set; }
-        public byte Blue { get; set; }
         public ShapeList ShapeName { get; set; }
         public ShapeManager ShapeManager { get; set; } = new ShapeManager();
         SQLServer_DrawAppDataContext ctx = new SQLServer_DrawAppDataContext();
@@ -41,11 +36,11 @@ namespace DrawApp
         }
 
         //Method to get a shape from ShapeManager and set it on the canvas
-        public Shape GetShape(ShapeList shapeName, int w, int h, Color color, MouseButtonEventArgs e)
+        public Shape GetShape(MouseButtonEventArgs e)
         {
             try
             {
-                Shape shape = ShapeManager.CreateNewShape(shapeName, w, h, color);
+                Shape shape = ShapeManager.CreateNewShape();
                 Point location = e.GetPosition(cvs_Drawing);
                 Canvas.SetTop(shape, location.Y);
                 Canvas.SetLeft(shape, location.X);
@@ -63,19 +58,19 @@ namespace DrawApp
         {
             try
             {
-                int w = Width;
-                int h = Height;
-                Color color= ShapeManager.ColorManager.CreateNewColor(Red, Green, Blue);
-                Shape shapeDrawing = GetShape(ShapeName, w, h, color, e);
+                Shape shapeDrawing = ShapeManager.CreateNewShape();
+                Point location = e.GetPosition(cvs_Drawing);
+                Canvas.SetTop(shapeDrawing, location.Y);
+                Canvas.SetLeft(shapeDrawing, location.X);
                 cvs_Drawing.Children.Add(shapeDrawing);
 
                 SQLServer_DrawAppDataContext ctx = new SQLServer_DrawAppDataContext();
 
                 TblColor c = new TblColor()
                 {
-                    Red = Red,
-                    Green = Green,
-                    Blue = Blue
+                    Red = ((SolidColorBrush)shapeDrawing.Fill).Color.R,
+                    Green = ((SolidColorBrush)shapeDrawing.Fill).Color.G,
+                    Blue = ((SolidColorBrush)shapeDrawing.Fill).Color.B
                 };
 
                 var savedColor = ctx.TblColors.Where(sc => sc.Red == c.Red && sc.Blue == c.Blue && sc.Green == c.Green).FirstOrDefault();
@@ -91,9 +86,7 @@ namespace DrawApp
 
                 TblShape s = new TblShape()
                 {
-                    Width = w,
-                    Height = h,
-                    Shape = ShapeManager.SetFinalShapeName(ShapeName.ToString(), Width, Height),
+                    Shape = ShapeManager.SetFinalShapeName(ShapeName.ToString(), shapeDrawing.Width, shapeDrawing.Height),
                     Color_ID = c.Color_ID,
                 };
 
@@ -124,9 +117,9 @@ namespace DrawApp
 
                 ctx.SubmitChanges();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                MessageBox.Show("Error occured - Please provide all necessary values before using this canvas.");
+                MessageBox.Show("Error occured - " + ex);
             }
         }
     }

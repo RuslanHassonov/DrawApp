@@ -18,7 +18,7 @@ namespace DrawApp
     public class ColorManager
     {
         public MainWindow Window { get; set; }
-
+        public Color NewColor { get; set; }
 
         //Constructors
         public ColorManager(MainWindow w)
@@ -30,18 +30,30 @@ namespace DrawApp
 
 
         //Add new color method
-        public Color CreateNewColor(byte r, byte g, byte b)
+        public Color CreateNewColor()
         {
-            Color c = new Color
+            NewColor = new Color
+            {
+                A = 255,
+                R = Byte.Parse(Window.tb_RedValue.Text),
+                G = Byte.Parse(Window.tb_GreenValue.Text),
+                B = Byte.Parse(Window.tb_BlueValue.Text)
+            };
+            return NewColor;
+        }
+
+        public Color RecreateAColor(byte r, byte g, byte b)
+        {
+            Color color = new Color
             {
                 A = 255,
                 R = r,
                 G = g,
                 B = b
             };
-            return c;
+            return color;
         }
-
+        
         //Load colors from Databse method
         public void LoadColors()
         {
@@ -58,7 +70,7 @@ namespace DrawApp
                            };
                 foreach (var item in list)
                 {
-                    Color color = CreateNewColor(item.R, item.G, item.B);
+                    Color color = RecreateAColor(item.R, item.G, item.B);
                     Rectangle colorRec = new Rectangle
                     {
                         Height = 20,
@@ -69,7 +81,7 @@ namespace DrawApp
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error" + ex.Message);
+                MessageBox.Show("Error " + ex.Message);
             }
 
         }

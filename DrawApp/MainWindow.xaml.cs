@@ -59,10 +59,22 @@ namespace DrawApp
                     byte r = Byte.Parse(tb_RedValue.Text);
                     byte g = Byte.Parse(tb_GreenValue.Text);
                     byte b = Byte.Parse(tb_BlueValue.Text);
-                    Color color = clrm.CreateNewColor(r, g, b);
                     ShapeList name = (cb_Shapes.SelectedItem.ToString() == ShapeList.Ellipse.ToString() ? ShapeList.Ellipse : ShapeList.Rectangle);
                     cvs_Example.Children.Clear();
-                    shapeExample = sm.CreateNewShape(name, ((int)cvs_Example.Width < w ? (int)cvs_Example.Width : w), ((int)cvs_Example.Height < h ? (int)cvs_Example.Height : h), color);
+                    shapeExample = sm.CreateNewShape();
+                    if (shapeExample.Width > cvs_Example.Width && shapeExample.Height > cvs_Example.Height)
+                    {
+                        shapeExample.Width = cvs_Example.Width;
+                        shapeExample.Height = cvs_Example.Height;
+                    }
+                    else if (shapeExample.Height > cvs_Example.Height)
+                    {
+                        shapeExample.Height = cvs_Example.Height;
+                    }
+                    else if (shapeExample.Width > cvs_Example.Width)
+                    {
+                        shapeExample.Width = cvs_Example.Width;
+                    }
                     Canvas.SetTop(shapeExample, 0);
                     Canvas.SetLeft(shapeExample, 0);
                     OnShapeChangedHappened(new ShapeChangedEventArgs(name, w, h, r, g, b));
