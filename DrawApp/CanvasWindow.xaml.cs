@@ -25,32 +25,15 @@ namespace DrawApp
     {
         public string CanvasName { get; set; }
         public ShapeList ShapeName { get; set; }
-        public ShapeManager ShapeManager { get; set; } = new ShapeManager();
+        public CanvasManager CanvasManager { get; set; } = new CanvasManager();
         SQLServer_DrawAppDataContext ctx = new SQLServer_DrawAppDataContext();
 
         public CanvasWindow(string name)
         {
             InitializeComponent();
             CanvasName = name;
+            //ShapeManager = new ShapeManager();
             this.Title = CanvasName;
-        }
-
-        //Method to get a shape from ShapeManager and set it on the canvas
-        public Shape GetShape(MouseButtonEventArgs e)
-        {
-            try
-            {
-                Shape shape = ShapeManager.CreateNewShape();
-                Point location = e.GetPosition(cvs_Drawing);
-                Canvas.SetTop(shape, location.Y);
-                Canvas.SetLeft(shape, location.X);
-                return shape;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error - " + ex);
-                return null;
-            }
         }
 
         //Click event to draw the chosen shape on canvas
@@ -58,7 +41,7 @@ namespace DrawApp
         {
             try
             {
-                Shape shapeDrawing = ShapeManager.CreateNewShape();
+                Shape shapeDrawing = CanvasManager.ShapeManager.CreateNewShape();
                 Point location = e.GetPosition(cvs_Drawing);
                 Canvas.SetTop(shapeDrawing, location.Y);
                 Canvas.SetLeft(shapeDrawing, location.X);
@@ -86,7 +69,7 @@ namespace DrawApp
 
                 TblShape s = new TblShape()
                 {
-                    Shape = ShapeManager.SetFinalShapeName(ShapeName.ToString(), shapeDrawing.Width, shapeDrawing.Height),
+                    Shape = CanvasManager.ShapeManager.SetFinalShapeName(ShapeName.ToString(), shapeDrawing.Width, shapeDrawing.Height),
                     Color_ID = c.Color_ID,
                 };
 

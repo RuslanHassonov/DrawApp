@@ -28,8 +28,7 @@ namespace DrawApp
         private CanvasManager cm;
         private ColorManager clrm;
         private Shape shapeExample;
-
-        public event EventHandler<ShapeChangedEventArgs> OnShapeChanged;
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -40,11 +39,6 @@ namespace DrawApp
             clrm.LoadColors();
             sm.LoadShapes();
             cm.LoadCanvasses();
-        }
-
-        private void OnShapeChangedHappened(ShapeChangedEventArgs args)
-        {
-            OnShapeChanged?.Invoke(this, args);
         }
 
         //ComboBox Selection of Shapes
@@ -77,7 +71,6 @@ namespace DrawApp
                     }
                     Canvas.SetTop(shapeExample, 0);
                     Canvas.SetLeft(shapeExample, 0);
-                    OnShapeChangedHappened(new ShapeChangedEventArgs(name, w, h, r, g, b));
                     cvs_Example.Children.Add(shapeExample);
                 }
                 catch (FormatException)
@@ -228,6 +221,7 @@ namespace DrawApp
                 try
                 {
                     CanvasWindow canvas = cm.CreateNewCanvas(selection.Name);
+
                     canvas.Show();
                     //var savedCanvas = (from o in ctx.TblOverviews
                     //                   where o.Name == canvas.Title

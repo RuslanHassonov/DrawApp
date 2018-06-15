@@ -21,7 +21,7 @@ namespace DrawApp
     {
         public MainWindow Window { get; set; }
         public Shape NewShape { get; set; }
-        public ColorManager ColorManager { get; set; }
+        public ColorManager ColorManager { get; set; } 
         public List<string> ListShapes { get; set; } = new List<string>();
 
         public ShapeManager(MainWindow w)
@@ -29,6 +29,7 @@ namespace DrawApp
             Window = w;
             ListShapes.Add("Ellipse");
             ListShapes.Add("Rectangle");
+            ColorManager = new ColorManager(Window);
         }
 
         public ShapeManager() { }
@@ -37,7 +38,7 @@ namespace DrawApp
 
         public Shape CreateNewShape()
         {
-            ColorManager = new ColorManager(Window);
+            
             Color newShapeColor = ColorManager.CreateNewColor();
 
             if (Window.cb_Shapes.SelectedItem.ToString() == "Ellipse")

@@ -22,15 +22,15 @@ namespace DrawApp
     {
         public CanvasWindow CanvasWindow { get; set; }
         public MainWindow MainWindow { get; set; }
-
+        public ShapeManager ShapeManager { get; set; }
         //Constructors
         public CanvasManager(MainWindow w)
         {
             MainWindow = w;
-            MainWindow.OnShapeChanged += OnShapeChangedHandler;
+            ShapeManager = new ShapeManager(w);
         }
 
-        public CanvasManager(){}
+        public CanvasManager(){ ShapeManager = new ShapeManager(MainWindow); }
 
         //Add a brand new canvas
         public CanvasWindow CreateNewCanvas(string name)
@@ -60,13 +60,5 @@ namespace DrawApp
             ctx.SubmitChanges();
             LoadCanvasses();
         }
-
-        //Event Handlers
-        private void OnShapeChangedHandler(object sender, ShapeChangedEventArgs e)
-        {
-
-        }
-
-
     }
 }
