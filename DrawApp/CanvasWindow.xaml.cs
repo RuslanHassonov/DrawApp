@@ -41,11 +41,11 @@ namespace DrawApp
         }
 
         //Method to get a shape from ShapeManager and set it on the canvas
-        public Shape GetShape(ShapeList shapeName, int w, int h, byte r, byte g, byte b, MouseButtonEventArgs e)
+        public Shape GetShape(ShapeList shapeName, int w, int h, Color color, MouseButtonEventArgs e)
         {
             try
             {
-                Shape shape = ShapeManager.CreateNewShape(shapeName, w, h, r, g, b);
+                Shape shape = ShapeManager.CreateNewShape(shapeName, w, h, color);
                 Point location = e.GetPosition(cvs_Drawing);
                 Canvas.SetTop(shape, location.Y);
                 Canvas.SetLeft(shape, location.X);
@@ -65,22 +65,20 @@ namespace DrawApp
             {
                 int w = Width;
                 int h = Height;
-                byte r = Red;
-                byte g = Green;
-                byte b = Blue;
-                Shape shapeDrawing = GetShape(ShapeName, w, h, r, g, b, e);
+                Color color= ShapeManager.ColorManager.CreateNewColor(Red, Green, Blue);
+                Shape shapeDrawing = GetShape(ShapeName, w, h, color, e);
                 cvs_Drawing.Children.Add(shapeDrawing);
 
                 SQLServer_DrawAppDataContext ctx = new SQLServer_DrawAppDataContext();
 
                 TblColor c = new TblColor()
                 {
-                    Red = r,
-                    Green = g,
-                    Blue = b
+                    Red = Red,
+                    Green = Green,
+                    Blue = Blue
                 };
 
-                TblColor savedColor = ctx.TblColors.Where(sc => sc.Red == c.Red && sc.Blue == c.Blue && sc.Green == c.Green).FirstOrDefault();
+                var savedColor = ctx.TblColors.Where(sc => sc.Red == c.Red && sc.Blue == c.Blue && sc.Green == c.Green).FirstOrDefault();
                 if (savedColor == null)
                 {
                     ctx.TblColors.InsertOnSubmit(c);
@@ -95,11 +93,11 @@ namespace DrawApp
                 {
                     Width = w,
                     Height = h,
-                    Shape = ShapeName.ToString(),
-                    Color_ID = c.Color_ID
+                    Shape = ShapeManager.SetFinalShapeName(ShapeName.ToString(), Width, Height),
+                    Color_ID = c.Color_ID,
                 };
 
-                TblShape savedShape = ctx.TblShapes.Where(ss => ss.Color_ID == s.Color_ID && ss.Width == s.Width && ss.Height == s.Height && ss.Shape == s.Shape).FirstOrDefault();
+                var savedShape = ctx.TblShapes.Where(ss => ss.Color_ID == s.Color_ID && ss.Width == s.Width && ss.Height == s.Height && ss.Shape == s.Shape).FirstOrDefault();
                 if (savedShape == null)
                 {
                     ctx.TblShapes.InsertOnSubmit(s);

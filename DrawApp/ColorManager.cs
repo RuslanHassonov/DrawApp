@@ -30,7 +30,7 @@ namespace DrawApp
 
 
         //Add new color method
-        public Color AddColor(byte r, byte g, byte b)
+        public Color CreateNewColor(byte r, byte g, byte b)
         {
             Color c = new Color
             {
@@ -58,7 +58,7 @@ namespace DrawApp
                            };
                 foreach (var item in list)
                 {
-                    Color color = AddColor(item.R, item.G, item.B);
+                    Color color = CreateNewColor(item.R, item.G, item.B);
                     Rectangle colorRec = new Rectangle
                     {
                         Height = 20,
@@ -77,6 +77,7 @@ namespace DrawApp
         //Method to write color to database
         public void WriteColorToDB(byte r, byte g, byte b)
         {
+
             SQLServer_DrawAppDataContext ctx = new SQLServer_DrawAppDataContext();
 
             TblColor c = new TblColor()

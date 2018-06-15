@@ -55,5 +55,10 @@ namespace DrawApp
                 MessageBox.Show("Please provide a proper name for the canvas.");
             }
         }
+
+        private void bt_Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

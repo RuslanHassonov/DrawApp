@@ -510,9 +510,7 @@ namespace DrawApp
 		
 		private System.Nullable<System.DateTime> _DateUpdated;
 		
-		private System.Nullable<int> _Position_ID;
-		
-		private EntityRef<TblPosition> _TblPosition;
+		private EntitySet<TblPosition> _TblPositions;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -526,13 +524,11 @@ namespace DrawApp
     partial void OnDateCreatedChanged();
     partial void OnDateUpdatedChanging(System.Nullable<System.DateTime> value);
     partial void OnDateUpdatedChanged();
-    partial void OnPosition_IDChanging(System.Nullable<int> value);
-    partial void OnPosition_IDChanged();
     #endregion
 		
 		public TblOverview()
 		{
-			this._TblPosition = default(EntityRef<TblPosition>);
+			this._TblPositions = new EntitySet<TblPosition>(new Action<TblPosition>(this.attach_TblPositions), new Action<TblPosition>(this.detach_TblPositions));
 			OnCreated();
 		}
 		
@@ -616,61 +612,16 @@ namespace DrawApp
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Position_ID", DbType="Int")]
-		public System.Nullable<int> Position_ID
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TblOverview_TblPosition", Storage="_TblPositions", ThisKey="Drawing_ID", OtherKey="Drawing_ID")]
+		public EntitySet<TblPosition> TblPositions
 		{
 			get
 			{
-				return this._Position_ID;
+				return this._TblPositions;
 			}
 			set
 			{
-				if ((this._Position_ID != value))
-				{
-					if (this._TblPosition.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnPosition_IDChanging(value);
-					this.SendPropertyChanging();
-					this._Position_ID = value;
-					this.SendPropertyChanged("Position_ID");
-					this.OnPosition_IDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TblPosition_TblOverview", Storage="_TblPosition", ThisKey="Position_ID", OtherKey="Position_ID", IsForeignKey=true, DeleteRule="CASCADE")]
-		public TblPosition TblPosition
-		{
-			get
-			{
-				return this._TblPosition.Entity;
-			}
-			set
-			{
-				TblPosition previousValue = this._TblPosition.Entity;
-				if (((previousValue != value) 
-							|| (this._TblPosition.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._TblPosition.Entity = null;
-						previousValue.TblOverviews.Remove(this);
-					}
-					this._TblPosition.Entity = value;
-					if ((value != null))
-					{
-						value.TblOverviews.Add(this);
-						this._Position_ID = value.Position_ID;
-					}
-					else
-					{
-						this._Position_ID = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("TblPosition");
-				}
+				this._TblPositions.Assign(value);
 			}
 		}
 		
@@ -693,6 +644,18 @@ namespace DrawApp
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
+		
+		private void attach_TblPositions(TblPosition entity)
+		{
+			this.SendPropertyChanging();
+			entity.TblOverview = this;
+		}
+		
+		private void detach_TblPositions(TblPosition entity)
+		{
+			this.SendPropertyChanging();
+			entity.TblOverview = null;
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TblPosition")]
@@ -703,7 +666,7 @@ namespace DrawApp
 		
 		private int _Position_ID;
 		
-		private int _Drawing_ID;
+		private System.Nullable<int> _Drawing_ID;
 		
 		private System.Nullable<int> _Shape_ID;
 		
@@ -711,7 +674,7 @@ namespace DrawApp
 		
 		private System.Nullable<double> _Y;
 		
-		private EntitySet<TblOverview> _TblOverviews;
+		private EntityRef<TblOverview> _TblOverview;
 		
 		private EntityRef<TblShape> _TblShape;
 		
@@ -721,7 +684,7 @@ namespace DrawApp
     partial void OnCreated();
     partial void OnPosition_IDChanging(int value);
     partial void OnPosition_IDChanged();
-    partial void OnDrawing_IDChanging(int value);
+    partial void OnDrawing_IDChanging(System.Nullable<int> value);
     partial void OnDrawing_IDChanged();
     partial void OnShape_IDChanging(System.Nullable<int> value);
     partial void OnShape_IDChanged();
@@ -733,7 +696,7 @@ namespace DrawApp
 		
 		public TblPosition()
 		{
-			this._TblOverviews = new EntitySet<TblOverview>(new Action<TblOverview>(this.attach_TblOverviews), new Action<TblOverview>(this.detach_TblOverviews));
+			this._TblOverview = default(EntityRef<TblOverview>);
 			this._TblShape = default(EntityRef<TblShape>);
 			OnCreated();
 		}
@@ -758,8 +721,8 @@ namespace DrawApp
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Drawing_ID", DbType="Int NOT NULL")]
-		public int Drawing_ID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Drawing_ID", DbType="Int")]
+		public System.Nullable<int> Drawing_ID
 		{
 			get
 			{
@@ -769,6 +732,10 @@ namespace DrawApp
 			{
 				if ((this._Drawing_ID != value))
 				{
+					if (this._TblOverview.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
 					this.OnDrawing_IDChanging(value);
 					this.SendPropertyChanging();
 					this._Drawing_ID = value;
@@ -842,16 +809,37 @@ namespace DrawApp
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TblPosition_TblOverview", Storage="_TblOverviews", ThisKey="Position_ID", OtherKey="Position_ID")]
-		public EntitySet<TblOverview> TblOverviews
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TblOverview_TblPosition", Storage="_TblOverview", ThisKey="Drawing_ID", OtherKey="Drawing_ID", IsForeignKey=true, DeleteRule="CASCADE")]
+		public TblOverview TblOverview
 		{
 			get
 			{
-				return this._TblOverviews;
+				return this._TblOverview.Entity;
 			}
 			set
 			{
-				this._TblOverviews.Assign(value);
+				TblOverview previousValue = this._TblOverview.Entity;
+				if (((previousValue != value) 
+							|| (this._TblOverview.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._TblOverview.Entity = null;
+						previousValue.TblPositions.Remove(this);
+					}
+					this._TblOverview.Entity = value;
+					if ((value != null))
+					{
+						value.TblPositions.Add(this);
+						this._Drawing_ID = value.Drawing_ID;
+					}
+					else
+					{
+						this._Drawing_ID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("TblOverview");
+				}
 			}
 		}
 		
@@ -907,18 +895,6 @@ namespace DrawApp
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-		
-		private void attach_TblOverviews(TblOverview entity)
-		{
-			this.SendPropertyChanging();
-			entity.TblPosition = this;
-		}
-		
-		private void detach_TblOverviews(TblOverview entity)
-		{
-			this.SendPropertyChanging();
-			entity.TblPosition = null;
 		}
 	}
 }

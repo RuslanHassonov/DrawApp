@@ -30,7 +30,6 @@ namespace DrawApp
         private Shape shapeExample;
 
         public event EventHandler<ShapeChangedEventArgs> OnShapeChanged;
-
         public MainWindow()
         {
             InitializeComponent();
@@ -60,9 +59,10 @@ namespace DrawApp
                     byte r = Byte.Parse(tb_RedValue.Text);
                     byte g = Byte.Parse(tb_GreenValue.Text);
                     byte b = Byte.Parse(tb_BlueValue.Text);
+                    Color color = clrm.CreateNewColor(r, g, b);
                     ShapeList name = (cb_Shapes.SelectedItem.ToString() == ShapeList.Ellipse.ToString() ? ShapeList.Ellipse : ShapeList.Rectangle);
                     cvs_Example.Children.Clear();
-                    shapeExample = sm.CreateNewShape(name, ((int)cvs_Example.Width < w ? (int)cvs_Example.Width : w), ((int)cvs_Example.Height < h ? (int)cvs_Example.Height : h), r, g, b);
+                    shapeExample = sm.CreateNewShape(name, ((int)cvs_Example.Width < w ? (int)cvs_Example.Width : w), ((int)cvs_Example.Height < h ? (int)cvs_Example.Height : h), color);
                     Canvas.SetTop(shapeExample, 0);
                     Canvas.SetLeft(shapeExample, 0);
                     OnShapeChangedHappened(new ShapeChangedEventArgs(name, w, h, r, g, b));
@@ -139,13 +139,12 @@ namespace DrawApp
                 byte b = Byte.Parse(tb_BlueValue.Text);
                 int w = Int32.Parse(tb_Width.Text);
                 int h = Int32.Parse(tb_Height.Text);
-                string name = sm.SetShapeName(cb_Shapes.SelectedItem.ToString(), w, h);
+                string name = sm.SetFinalShapeName(cb_Shapes.SelectedItem.ToString(), w, h);
                 sm.WriteShapeToDB(name, r, g, b, w, h);
                 lb_ShapeTemplates.Items.Clear();
                 lb_ColourTemplates.Items.Clear();
                 clrm.LoadColors();
                 sm.LoadShapes();
-
 
             }
             catch (FormatException)
@@ -218,7 +217,33 @@ namespace DrawApp
                 {
                     CanvasWindow canvas = cm.CreateNewCanvas(selection.Name);
                     canvas.Show();
-                    
+                    //var savedCanvas = (from o in ctx.TblOverviews
+                    //                   where o.Name == canvas.Title
+                    //                   select o).FirstOrDefault();
+
+                    //var position = (from p in ctx.TblPositions
+                    //                where p.Drawing_ID == savedCanvas.Drawing_ID
+                    //                select p).FirstOrDefault();
+
+                    //var shape = from s in ctx.TblShapes
+                    //            where s.Shape_ID == position.Shape_ID
+                    //            select new SavedShape
+                    //            {
+                    //                R = (byte)s.TblColor.Red,
+                    //                G = (byte)s.TblColor.Green,
+                    //                B = (byte)s.TblColor.Green,
+                    //                W = (int)s.Width,
+                    //                H = (int)s.Height,
+                    //                Shape = s.Shape
+                    //            };
+                    //foreach (var item in shape)
+                    //{
+                    //    ShapeList name = item.Shape == "Circle" || item.Shape == "Ellipse" ? ShapeList.Ellipse : ShapeList.Rectangle;
+                    //    Shape loadedShape = sm.CreateNewShape(name, item.W, item.H, item.R, item.G, item.B);
+                    //    cm.RedrawAllShapes(loadedShape, (double)position.X, (double)position.Y);
+                    //}
+
+
                 }
                 catch (Exception ex)
                 {

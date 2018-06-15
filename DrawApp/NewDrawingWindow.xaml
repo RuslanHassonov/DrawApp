@@ -9,7 +9,7 @@
     <Grid>
         <TextBox x:Name="tb_Drawing_Name" HorizontalAlignment="Left" Height="23" Margin="88,34,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="253"/>
         <Button x:Name="bt_AddNewDrawing" Content="New Drawing" HorizontalAlignment="Left" Margin="88,75,0,0" VerticalAlignment="Top" Width="100" Height="35" Click="bt_AddNewDrawing_Click"/>
-        <Button x:Name="bt_Cancel" Content="Cancel" HorizontalAlignment="Left" Margin="241,75,0,0" VerticalAlignment="Top" Width="100" Height="35"/>
+        <Button x:Name="bt_Cancel" Content="Cancel" HorizontalAlignment="Left" Margin="241,75,0,0" VerticalAlignment="Top" Width="100" Height="35" Click="bt_Cancel_Click"/>
         <Label Content="Title" HorizontalAlignment="Left" Margin="48,30,0,0" VerticalAlignment="Top" Width="35"/>
 
     </Grid>

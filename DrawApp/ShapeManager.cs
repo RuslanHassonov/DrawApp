@@ -35,15 +35,17 @@ namespace DrawApp
 
         #region Shape Creation
 
-        public Shape CreateNewShape(ShapeList shapeList, int w, int h, byte r, byte g, byte b)
+        public Shape CreateNewShape(ShapeList shapeList, int w, int h, Color color)
         {
+            Color newShapeColor = ColorManager.CreateNewColor(color.R, color.G, color.B);
+
             switch (shapeList)
             {
                 case ShapeList.Ellipse:
-                    NewShape = CreateNewEllipse(w, h, r, g, b);
+                    NewShape = CreateNewEllipse(w, h, newShapeColor);
                     break;
                 case ShapeList.Rectangle:
-                    NewShape = CreateNewRectangle(w, h, r, g, b);
+                    NewShape = CreateNewRectangle(w, h, newShapeColor);
                     break;
                 default:
                     break;
@@ -52,7 +54,7 @@ namespace DrawApp
             return NewShape;
         }
 
-        public string SetShapeName(string name, int w, int h)
+        public string SetFinalShapeName(string name, int w, int h)
         {
             string finalName = string.Empty;
             if (name == "Ellipse" && h == w)
@@ -74,24 +76,24 @@ namespace DrawApp
             return null;
         }
 
-        public Shape CreateNewEllipse(int w, int h, byte r, byte g, byte b)
+        public Shape CreateNewEllipse(int w, int h, Color color)
         {
             NewShape = new Ellipse
             {
                 Width = w,
                 Height = h,
-                Fill = new SolidColorBrush(new Color { R = r, G = g, B = b, A = 255 })
+                Fill = new SolidColorBrush(color)
             };
             return NewShape;
         }
 
-        public Shape CreateNewRectangle(int w, int h, byte r, byte g, byte b)
+        public Shape CreateNewRectangle(int w, int h, Color color)
         {
             NewShape = new Rectangle
             {
                 Width = w,
                 Height = h,
-                Fill = new SolidColorBrush(new Color { R = r, G = g, B = b, A = 255 })
+                Fill = new SolidColorBrush(color)
             };
             return NewShape;
         }
@@ -131,7 +133,7 @@ namespace DrawApp
                         Width = 40,
                         Height = 30
                     };
-                    Color color = ColorManager.AddColor(item.R, item.G, item.B);
+                    Color color = ColorManager.CreateNewColor(item.R, item.G, item.B);
                     colorLabel.Background = new SolidColorBrush(color);
 
                     Label descriptionLabel = new Label
@@ -196,5 +198,6 @@ namespace DrawApp
                 MessageBox.Show("This shape already exists");
             }
         }
+        
     }
 }
