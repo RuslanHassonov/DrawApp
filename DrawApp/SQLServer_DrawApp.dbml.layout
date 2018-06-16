@@ -20,31 +20,31 @@
         <elementListCompartment Id="5bddd342-8cc7-41ef-ac0f-b21cd33086d6" absoluteBounds="3.515, 4.46, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="81725e4c-fb73-4295-bb4b-bd67a8f8259d" absoluteBounds="6.25, 0.875, 2, 1.7708968098958329">
-      <DataClassMoniker Name="/SQLServer_DrawAppDataContext/TblPosition" />
-      <nestedChildShapes>
-        <elementListCompartment Id="6b726a37-791c-4ebd-8a2a-9066930e482b" absoluteBounds="6.265, 1.335, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <associationConnector edgePoints="[(2.75 : 1.78929768880208); (3.5 : 1.78929768880208)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.75 : 1.78929768880208); (3.5 : 1.78929768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/SQLServer_DrawAppDataContext/TblColor/TblColor_TblShape" />
       <nodes>
         <classShapeMoniker Id="0cca0698-7b95-4c90-b006-c98a4ad7ded1" />
         <classShapeMoniker Id="9c00a609-91fa-4ec5-ad52-3bb1e54a101c" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(5.5 : 4.78929768880208); (7.25 : 4.78929768880208); (7.25 : 2.64589680989583)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <classShape Id="d8561a2b-348c-4447-a898-ee97a5c120b0" absoluteBounds="7.75, 1.75, 2, 1.7708968098958331">
+      <DataClassMoniker Name="/SQLServer_DrawAppDataContext/TblPosition" />
+      <nestedChildShapes>
+        <elementListCompartment Id="3efe2c7b-944e-4517-8f4e-5a83903c69a5" absoluteBounds="7.765, 2.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(5.5 : 4.78929768880208); (8.75 : 4.78929768880208); (8.75 : 3.52089680989583)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/SQLServer_DrawAppDataContext/TblOverview/TblOverview_TblPosition" />
       <nodes>
         <classShapeMoniker Id="78b8d36f-c2b9-4abd-9aed-c8c89c8fe159" />
-        <classShapeMoniker Id="81725e4c-fb73-4295-bb4b-bd67a8f8259d" />
+        <classShapeMoniker Id="d8561a2b-348c-4447-a898-ee97a5c120b0" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(5.5 : 1.76044840494792); (6.25 : 1.76044840494792)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(5.5 : 2.19794840494792); (7.75 : 2.19794840494792)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/SQLServer_DrawAppDataContext/TblShape/TblShape_TblPosition" />
       <nodes>
         <classShapeMoniker Id="9c00a609-91fa-4ec5-ad52-3bb1e54a101c" />
-        <classShapeMoniker Id="81725e4c-fb73-4295-bb4b-bd67a8f8259d" />
+        <classShapeMoniker Id="d8561a2b-348c-4447-a898-ee97a5c120b0" />
       </nodes>
     </associationConnector>
   </nestedChildShapes>

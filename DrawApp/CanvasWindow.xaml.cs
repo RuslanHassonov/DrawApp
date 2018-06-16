@@ -113,5 +113,21 @@ namespace DrawApp
                 MessageBox.Show("Error occured - " + ex);
             }
         }
+
+        private void CanvasWindow1_Closed(object sender, EventArgs e)
+        {
+            TblOverview tblOverview = new TblOverview()
+            {
+                DateUpdated = DateTime.Now,
+                Name = this.Title
+            };
+
+            var t = ctx.TblOverviews.Where(n => n.Name == tblOverview.Name).FirstOrDefault();
+            if (t != null)
+            {
+                t.DateUpdated = tblOverview.DateUpdated;
+                ctx.SubmitChanges();
+            }
+        }
     }
 }

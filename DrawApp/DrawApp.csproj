@@ -67,7 +67,6 @@
     <Compile Include="SavedColor.cs" />
     <Compile Include="SavedShape.cs" />
     <Compile Include="SelectedCanvas.cs" />
-    <Compile Include="ShapeChangedEventArgs.cs" />
     <Compile Include="ShapeManager.cs" />
     <Compile Include="SQLServer_DrawApp.designer.cs">
       <AutoGen>True</AutoGen>

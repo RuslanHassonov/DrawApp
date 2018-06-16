@@ -271,14 +271,17 @@ namespace DrawApp
 
         private void bt_DeleteDrawing_Click(object sender, RoutedEventArgs e)
         {
-            TblOverview selected = dg_DrawingOverview.SelectedItem as TblOverview;
-            cm.DeleteCanvas(selected.Name);
+            try
+            {
+                TblOverview selected = dg_DrawingOverview.SelectedItem as TblOverview;
+                cm.DeleteCanvas(selected.Name);
+                cm.LoadCanvasses();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error - " + ex);
+            }
         }
     }
 
 }
-
-
-//Select shape first, open canvas second is impossible => event handling needs to be improved.
-//After creating a new canvas, drawing is impossible. Have to subscribe new canvasses to event.
-//Implement saving of drawing. Possible Solution => Saved part by part, color => shape => drawing.
