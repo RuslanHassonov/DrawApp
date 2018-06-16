@@ -222,31 +222,29 @@ namespace DrawApp
                 try
                 {
                     CanvasWindow canvas = cm.CreateNewCanvas(selection.Name);
-
                     canvas.Show();
-                    var savedCanvas = (from o in ctx.TblOverviews
-                                       where o.Name == canvas.Title
-                                       select o).FirstOrDefault();
 
-                    var position = (from p in ctx.TblPositions
-                                    where p.Drawing_ID == savedCanvas.Drawing_ID
-                                    select p).FirstOrDefault();
-
-                    var shapesOnCanvas = from s in ctx.TblShapes
-                                         where s.Shape_ID == position.Shape_ID
-                                         select new SavedShape
-                                         {
-                                             R = (byte)s.TblColor.Red,
-                                             G = (byte)s.TblColor.Green,
-                                             B = (byte)s.TblColor.Blue,
-                                             W = (int)s.Width,
-                                             H = (int)s.Height,
-                                             Shape = s.Shape
-                                         };
-                    foreach (var item in shapesOnCanvas)
+                    var savedShapes = from o in ctx.TblOverviews
+                                      where o.Name == canvas.Title
+                                      from p in ctx.TblPositions
+                                      where p.Drawing_ID == o.Drawing_ID
+                                      from s in ctx.TblShapes
+                                      where s.Shape_ID == p.Shape_ID
+                                      select new SavedShape
+                                      {
+                                          R = (byte)s.TblColor.Red,
+                                          G = (byte)s.TblColor.Green,
+                                          B = (byte)s.TblColor.Blue,
+                                          W = (int)s.Width,
+                                          H = (int)s.Height,
+                                          X = (int)p.X,
+                                          Y = (int)p.Y,
+                                          Shape = s.Shape
+                                      };
+                    foreach (var item in savedShapes)
                     {
                         Shape loadedShape = sm.RecreateShape(item);
-                        cm.RedrawAllShapes(loadedShape, (double)position.X, (double)position.Y);
+                        cm.RedrawAllShapes(loadedShape, (double)item.X, (double)item.Y);
                     }
 
 

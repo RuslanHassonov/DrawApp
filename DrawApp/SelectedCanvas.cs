@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DrawApp
 {
-    internal class SelectedCanvas
+    public class SelectedCanvas
     {
         public string Name { get; set; }
         public DateTime DateCreated { get; set; }

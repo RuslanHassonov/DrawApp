@@ -15,6 +15,8 @@ namespace DrawApp
         public byte G { get; set; }
         public byte B { get; set; }
         public int Shape_ID { get; set; }
+        public int X { get; set; }
+        public int Y { get; set; }
 
         public string ToString(string shape)
         {
