@@ -13,8 +13,8 @@
     <Type Name="TblShape">
       <Column Name="Shape_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Shape" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="Width" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="Height" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Width" Type="float" DbType="float" CanBeNull="true" />
+      <Column Name="Height" Type="float" DbType="float" CanBeNull="true" />
       <Column Name="Color_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="TblShape_TblPosition" Member="TblPositions" ThisKey="Shape_ID" OtherKey="Shape_ID" Type="TblPosition" />
       <Association Name="TblColor_TblShape" Member="TblColor" ThisKey="Color_ID" OtherKey="Color_ID" Type="TblColor" IsForeignKey="true" DeleteRule="CASCADE" />

@@ -26,7 +26,7 @@ namespace DrawApp
             Window = w;
         }
 
-        public ColorManager(){}
+        //public ColorManager(){}
 
 
         //Add new color method

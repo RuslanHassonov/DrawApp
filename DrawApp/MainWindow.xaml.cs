@@ -28,7 +28,7 @@ namespace DrawApp
         private CanvasManager cm;
         private ColorManager clrm;
         private Shape shapeExample;
-        
+
         public MainWindow()
         {
             InitializeComponent();
@@ -144,7 +144,8 @@ namespace DrawApp
                 byte b = Byte.Parse(tb_BlueValue.Text);
                 int w = Int32.Parse(tb_Width.Text);
                 int h = Int32.Parse(tb_Height.Text);
-                string name = sm.SetFinalShapeName(cb_Shapes.SelectedItem.ToString(), w, h);
+                Shape shape = sm.CreateNewShape();
+                string name = sm.SetFinalShapeName(shape, w, h);
                 sm.WriteShapeToDB(name, r, g, b, w, h);
                 lb_ShapeTemplates.Items.Clear();
                 lb_ColourTemplates.Items.Clear();
@@ -223,31 +224,30 @@ namespace DrawApp
                     CanvasWindow canvas = cm.CreateNewCanvas(selection.Name);
 
                     canvas.Show();
-                    //var savedCanvas = (from o in ctx.TblOverviews
-                    //                   where o.Name == canvas.Title
-                    //                   select o).FirstOrDefault();
+                    var savedCanvas = (from o in ctx.TblOverviews
+                                       where o.Name == canvas.Title
+                                       select o).FirstOrDefault();
 
-                    //var position = (from p in ctx.TblPositions
-                    //                where p.Drawing_ID == savedCanvas.Drawing_ID
-                    //                select p).FirstOrDefault();
+                    var position = (from p in ctx.TblPositions
+                                    where p.Drawing_ID == savedCanvas.Drawing_ID
+                                    select p).FirstOrDefault();
 
-                    //var shape = from s in ctx.TblShapes
-                    //            where s.Shape_ID == position.Shape_ID
-                    //            select new SavedShape
-                    //            {
-                    //                R = (byte)s.TblColor.Red,
-                    //                G = (byte)s.TblColor.Green,
-                    //                B = (byte)s.TblColor.Green,
-                    //                W = (int)s.Width,
-                    //                H = (int)s.Height,
-                    //                Shape = s.Shape
-                    //            };
-                    //foreach (var item in shape)
-                    //{
-                    //    ShapeList name = item.Shape == "Circle" || item.Shape == "Ellipse" ? ShapeList.Ellipse : ShapeList.Rectangle;
-                    //    Shape loadedShape = sm.CreateNewShape(name, item.W, item.H, item.R, item.G, item.B);
-                    //    cm.RedrawAllShapes(loadedShape, (double)position.X, (double)position.Y);
-                    //}
+                    var shapesOnCanvas = from s in ctx.TblShapes
+                                         where s.Shape_ID == position.Shape_ID
+                                         select new SavedShape
+                                         {
+                                             R = (byte)s.TblColor.Red,
+                                             G = (byte)s.TblColor.Green,
+                                             B = (byte)s.TblColor.Blue,
+                                             W = (int)s.Width,
+                                             H = (int)s.Height,
+                                             Shape = s.Shape
+                                         };
+                    foreach (var item in shapesOnCanvas)
+                    {
+                        Shape loadedShape = sm.RecreateShape(item);
+                        cm.RedrawAllShapes(loadedShape, (double)position.X, (double)position.Y);
+                    }
 
 
                 }

@@ -279,9 +279,9 @@ namespace DrawApp
 		
 		private string _Shape;
 		
-		private System.Nullable<int> _Width;
+		private System.Nullable<float> _Width;
 		
-		private System.Nullable<int> _Height;
+		private System.Nullable<float> _Height;
 		
 		private System.Nullable<int> _Color_ID;
 		
@@ -297,9 +297,9 @@ namespace DrawApp
     partial void OnShape_IDChanged();
     partial void OnShapeChanging(string value);
     partial void OnShapeChanged();
-    partial void OnWidthChanging(System.Nullable<int> value);
+    partial void OnWidthChanging(System.Nullable<float> value);
     partial void OnWidthChanged();
-    partial void OnHeightChanging(System.Nullable<int> value);
+    partial void OnHeightChanging(System.Nullable<float> value);
     partial void OnHeightChanged();
     partial void OnColor_IDChanging(System.Nullable<int> value);
     partial void OnColor_IDChanged();
@@ -352,8 +352,8 @@ namespace DrawApp
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Width", DbType="Int")]
-		public System.Nullable<int> Width
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Width", DbType="float")]
+		public System.Nullable<float> Width
 		{
 			get
 			{
@@ -372,8 +372,8 @@ namespace DrawApp
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Height", DbType="Int")]
-		public System.Nullable<int> Height
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Height", DbType="float")]
+		public System.Nullable<float> Height
 		{
 			get
 			{

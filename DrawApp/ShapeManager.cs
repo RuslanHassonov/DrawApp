@@ -21,7 +21,7 @@ namespace DrawApp
     {
         public MainWindow Window { get; set; }
         public Shape NewShape { get; set; }
-        public ColorManager ColorManager { get; set; } 
+        public ColorManager ColorManager { get; set; }
         public List<string> ListShapes { get; set; } = new List<string>();
 
         public ShapeManager(MainWindow w)
@@ -38,7 +38,7 @@ namespace DrawApp
 
         public Shape CreateNewShape()
         {
-            
+
             Color newShapeColor = ColorManager.CreateNewColor();
 
             if (Window.cb_Shapes.SelectedItem.ToString() == "Ellipse")
@@ -61,29 +61,58 @@ namespace DrawApp
                 };
                 return NewShape;
             }
-            
+
         }
 
-        public string SetFinalShapeName(string name, double w, double h)
+        public Shape RecreateShape(SavedShape savedShape)
+        {
+            Color newShapeColor = ColorManager.RecreateAColor(savedShape.R, savedShape.G, savedShape.B);
+
+            if (savedShape.Shape == "Ellipse" || savedShape.Shape == "Circle")
+            {
+                NewShape = new Ellipse
+                {
+                    Width = savedShape.W,
+                    Height = savedShape.H,
+                    Fill = new SolidColorBrush(newShapeColor)
+                };
+                return NewShape;
+            }
+            else
+            {
+                NewShape = new Rectangle
+                {
+                    Width = savedShape.W,
+                    Height = savedShape.H,
+                    Fill = new SolidColorBrush(newShapeColor)
+                };
+                return NewShape;
+            }
+        }
+
+        public string SetFinalShapeName(Shape s, double w, double h)
         {
             string finalName = string.Empty;
-            if (name == "Ellipse" && h == w)
+            if (s is Ellipse && h == w)
             {
                 return finalName = "Circle";
             }
-            else if (name == "Ellipse" && h != w)
+            else if (s is Ellipse && h != w)
             {
                 return finalName = "Ellipse";
             }
-            else if (name == "Rectangle" && h == w)
+            else if (s is Rectangle && h == w)
             {
                 return finalName = "Square";
             }
-            else if (name == "Rectangle" && h != w)
+            else if (s is Rectangle && h != w)
             {
                 return finalName = "Rectangle";
             }
-            return null;
+            else
+            {
+                return "Unknown";
+            }
         }
 
         #endregion
@@ -186,6 +215,6 @@ namespace DrawApp
                 MessageBox.Show("This shape already exists");
             }
         }
-        
+
     }
 }

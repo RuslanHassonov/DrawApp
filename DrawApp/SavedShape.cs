@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DrawApp
 {
-    internal class SavedShape
+    public class SavedShape
     {
         public int H { get; set; }
         public int W { get; set; }
@@ -20,22 +20,27 @@ namespace DrawApp
         {
             if (shape == "Circle" && H == W)
             {
+                Shape = "Ellipse";
                 return "Circle - " + H;
             }
             else if (shape == "Ellipse" && H != W)
             {
+                Shape = "Ellipse";
                 return "Ellipse - " + H + " x " + W;
             }
             else if (shape == "Square" && H == W)
             {
+                Shape = "Rectangle";
                 return "Square - " + H;
             }
             else if (shape == "Rectangle" && H != W)
             {
+                Shape = "Rectangle";
                 return "Rectangle - " + H + " x " + W;
             }
             else
             {
+                Shape = "Unknown";
                 return "Unknown";
             }
         }

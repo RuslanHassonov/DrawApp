@@ -29,21 +29,26 @@ namespace DrawApp
             MainWindow = w;
             ShapeManager = new ShapeManager(w);
         }
-
-        public CanvasManager(){ ShapeManager = new ShapeManager(MainWindow); }
-
+        
         //Add a brand new canvas
         public CanvasWindow CreateNewCanvas(string name)
         {
-            CanvasWindow = new CanvasWindow(name);
+            CanvasWindow = new CanvasWindow(name, MainWindow);
             return CanvasWindow;
+        }
+
+        //Redraw shapes on canvas after reopening canvas
+        public void RedrawAllShapes(Shape shape, double x, double y)
+        {
+            Canvas.SetTop(shape, y);
+            Canvas.SetLeft(shape, x);
+            CanvasWindow.cvs_Drawing.Children.Add(shape);
         }
 
         //Load saved Canvasses to DataGrid
         public void LoadCanvasses()
         {
             SQLServer_DrawAppDataContext ctx = new SQLServer_DrawAppDataContext();
-
             var list = from o in ctx.TblOverviews
                        select o;
             MainWindow.dg_DrawingOverview.ItemsSource = list;

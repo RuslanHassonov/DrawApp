@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DrawApp
 {
-    internal class SavedColor
+    public class SavedColor
     {
         public byte R { get; set; }
         public byte G { get; set; }

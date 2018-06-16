@@ -25,14 +25,15 @@ namespace DrawApp
     {
         public string CanvasName { get; set; }
         public ShapeList ShapeName { get; set; }
-        public CanvasManager CanvasManager { get; set; } = new CanvasManager();
+        public CanvasManager CanvasManager { get; set; }
+
         SQLServer_DrawAppDataContext ctx = new SQLServer_DrawAppDataContext();
 
-        public CanvasWindow(string name)
+        public CanvasWindow(string name, MainWindow mainWindow)
         {
             InitializeComponent();
+            CanvasManager= new CanvasManager(mainWindow);
             CanvasName = name;
-            //ShapeManager = new ShapeManager();
             this.Title = CanvasName;
         }
 
@@ -69,7 +70,9 @@ namespace DrawApp
 
                 TblShape s = new TblShape()
                 {
-                    Shape = CanvasManager.ShapeManager.SetFinalShapeName(ShapeName.ToString(), shapeDrawing.Width, shapeDrawing.Height),
+                    Shape = CanvasManager.ShapeManager.SetFinalShapeName(shapeDrawing, shapeDrawing.Width, shapeDrawing.Height),
+                    Width = (float)shapeDrawing.Width,
+                    Height = (float)shapeDrawing.Height,
                     Color_ID = c.Color_ID,
                 };
 
@@ -99,6 +102,11 @@ namespace DrawApp
                 }
 
                 ctx.SubmitChanges();
+            }
+
+            catch (FormatException)
+            {
+                MessageBox.Show("Please provide necessary values or select a shape from the selection window");
             }
             catch (Exception ex)
             {
