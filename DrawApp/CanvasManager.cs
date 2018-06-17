@@ -15,10 +15,11 @@ using System.Windows.Shapes;
 using System.Windows.Markup;
 using System.Xml;
 using System.IO;
+using System.Data;
 
 namespace DrawApp
 {
-    public class CanvasManager
+    public class CanvasManager : IStorable
     {
         public CanvasWindow CanvasWindow { get; set; }
         public MainWindow MainWindow { get; set; }
@@ -64,6 +65,18 @@ namespace DrawApp
             ctx.TblOverviews.DeleteOnSubmit(deleteCanvas);
             ctx.SubmitChanges();
             LoadCanvasses();
+        }
+
+        public void CreateLocalBackup()
+        {
+            //
+        }
+
+        public DataTable CreateDataTable()
+        {
+            DataTable localCanvasOverview = new DataTable();
+
+            return localCanvasOverview;
         }
     }
 }

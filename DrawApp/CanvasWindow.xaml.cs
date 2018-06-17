@@ -127,6 +127,7 @@ namespace DrawApp
             {
                 t.DateUpdated = tblOverview.DateUpdated;
                 ctx.SubmitChanges();
+                CanvasManager.LoadCanvasses();
             }
         }
     }

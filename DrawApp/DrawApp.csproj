@@ -60,6 +60,7 @@
       <DependentUpon>CanvasWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ColorManager.cs" />
+    <Compile Include="IStorable.cs" />
     <Compile Include="NewCanvasEventArgs.cs" />
     <Compile Include="NewDrawingWindow.xaml.cs">
       <DependentUpon>NewDrawingWindow.xaml</DependentUpon>

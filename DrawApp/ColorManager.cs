@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ using System.Windows.Shapes;
 
 namespace DrawApp
 {
-    public class ColorManager
+    public class ColorManager : IStorable
     {
         public MainWindow Window { get; set; }
         public Color NewColor { get; set; }
@@ -109,6 +110,18 @@ namespace DrawApp
             {
                 MessageBox.Show("This color already exists.");
             }
+        }
+
+        public DataTable CreateDataTable()
+        {
+            DataTable localColorBackup = new DataTable();
+
+            return localColorBackup;
+        }
+
+        public void CreateLocalBackup()
+        {
+            //
         }
     }
 }

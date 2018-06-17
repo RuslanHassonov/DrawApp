@@ -45,7 +45,7 @@ namespace DrawApp
     #endregion
 		
 		public SQLServer_DrawAppDataContext() : 
-				base(global::DrawApp.Properties.Settings.Default._2018_Hassonov_Ruslan_C_ConnectionString2, mappingSource)
+				base(global::DrawApp.Properties.Settings.Default._2018_Hassonov_Ruslan_C_ConnectionString, mappingSource)
 		{
 			OnCreated();
 		}

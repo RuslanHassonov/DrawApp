@@ -22,37 +22,15 @@ namespace DrawApp.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=sqlmobyus.vlan77.be;Initial Catalog=2018_Hassonov_Ruslan_C#;Persist S" +
-            "ecurity Info=True;User ID=cursist1718_c0109030;Password=Sp1d3rman246517482887")]
-        public string _2018_Hassonov_Ruslan_C_ConnectionString {
-            get {
-                return ((string)(this["_2018_Hassonov_Ruslan_C_ConnectionString"]));
-            }
-        }
-        
+
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
         [global::System.Configuration.DefaultSettingValueAttribute("Data Source=sqlmobyus.vlan77.be;Initial Catalog=2018_Hassonov_Ruslan_C#;User ID=c" +
             "ursist1718_c0109030")]
-        public string _2018_Hassonov_Ruslan_C_ConnectionString1 {
+        public string _2018_Hassonov_Ruslan_C_ConnectionString {
             get {
-                return ((string)(this["_2018_Hassonov_Ruslan_C_ConnectionString1"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=sqlmobyus.vlan77.be;Initial Catalog=2018_Hassonov_Ruslan_C#;User ID=c" +
-            "ursist1718_c0109030;Password=Sp1d3rman246517482887")]
-        public string _2018_Hassonov_Ruslan_C_ConnectionString2 {
-            get {
-                return ((string)(this["_2018_Hassonov_Ruslan_C_ConnectionString2"]));
+                return ((string)(this["_2018_Hassonov_Ruslan_C_ConnectionString"]));
             }
         }
     }

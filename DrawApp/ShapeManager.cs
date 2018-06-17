@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace DrawApp
 {
     public enum ShapeList { Ellipse, Rectangle }
 
-    public class ShapeManager
+    public class ShapeManager : IStorable
     {
         public MainWindow Window { get; set; }
         public Shape NewShape { get; set; }
@@ -216,5 +217,15 @@ namespace DrawApp
             }
         }
 
+        public DataTable CreateDataTable()
+        {
+            DataTable localShapeBackup = new DataTable();
+            return localShapeBackup;
+        }
+
+        public void CreateLocalBackup()
+        {
+            //
+        }
     }
 }
